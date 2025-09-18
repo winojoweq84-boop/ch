@@ -55,13 +55,12 @@ function Badge({ className, variant, animateOnAppear = true, ...props }: BadgePr
   }
 
   return (
-    <motion.div 
+    <motion.div
       variants={motionVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}
       className={cn(badgeVariants({ variant }), className)} 
-      {...(props as any)} 
     />
   );
 }

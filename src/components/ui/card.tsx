@@ -49,7 +49,6 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
           "rounded-2xl border border-trim-silver/20 bg-asphalt text-pearl shadow-xl",
           className
         )}
-        {...(props as any)}
       />
     );
   }

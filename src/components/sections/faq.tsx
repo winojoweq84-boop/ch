@@ -112,7 +112,7 @@ export default function FAQ() {
           </div>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto">
             Get instant answers to common questions about selling your car with CarVault. 
-            Can't find what you're looking for? Our support team is here to help.
+            Can&apos;t find what you&apos;re looking for? Our support team is here to help.
           </p>
         </motion.div>
 

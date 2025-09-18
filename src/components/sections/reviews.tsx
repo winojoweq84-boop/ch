@@ -252,7 +252,7 @@ export default function Reviews() {
 
               {/* Review Text */}
               <blockquote className="text-lg lg:text-xl text-pearl leading-relaxed mb-8 font-medium">
-                "{currentReview.text}"
+                &ldquo;{currentReview.text}&rdquo;
               </blockquote>
 
               {/* Customer Info */}
