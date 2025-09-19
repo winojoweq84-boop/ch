@@ -58,19 +58,6 @@ function Hero() {
       {/* Carbon fiber pattern */}
       <div className="absolute inset-0 bg-carbon-fiber opacity-[0.06] pointer-events-none" />
       
-      {/* Animated gradient splitter */}
-      <div className="absolute bottom-0 left-0 w-full h-1 overflow-hidden">
-        <motion.div
-          className="w-full h-full bg-gradient-to-r from-trim-silver/20 via-trim-silver/60 to-taillight-red"
-          initial={{ x: "-100%" }}
-          animate={{ x: "0%" }}
-          transition={{
-            duration: 2,
-            ease: "easeOut" as const,
-            delay: 0.5
-          }}
-        />
-      </div>
 
       <motion.div
         variants={containerVariants}

@@ -295,7 +295,7 @@ export function CarValuationForm() {
             </div>
 
             {/* Contact Details */}
-            <div className="space-y-4 pt-4 border-t border-trim-silver/20">
+            <div className="space-y-4 pt-4">
               <h3 className="font-saira text-lg font-semibold text-pearl">
                 Contact Information
               </h3>
