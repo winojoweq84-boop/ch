@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react"
-import { motion, useReducedMotion } from "framer-motion"
+import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
@@ -26,11 +26,11 @@ const badgeVariants = cva(
   },
 )
 
-export interface BadgeProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {
-  animateOnAppear?: boolean;
-}
+export type BadgeProps = Omit<React.HTMLAttributes<HTMLDivElement>, "onDrag"> &
+  HTMLMotionProps<"div"> &
+  VariantProps<typeof badgeVariants> & {
+    animateOnAppear?: boolean;
+  };
 
 function Badge({ className, variant, animateOnAppear = true, ...props }: BadgeProps) {
   const shouldReduceMotion = useReducedMotion();
@@ -49,8 +49,10 @@ function Badge({ className, variant, animateOnAppear = true, ...props }: BadgePr
   };
 
   if (!animateOnAppear) {
+    // Filter out motion-specific props when using regular div
+    const { onDrag: _onDrag, onDragStart: _onDragStart, onDragEnd: _onDragEnd, onAnimationStart: _onAnimationStart, onAnimationComplete: _onAnimationComplete, ...htmlProps } = props;
     return (
-      <div className={cn(badgeVariants({ variant }), className)} {...props} />
+      <div className={cn(badgeVariants({ variant }), className)} {...htmlProps} />
     );
   }
 

@@ -1,13 +1,14 @@
 "use client";
 
 import * as React from "react"
-import { motion, useReducedMotion } from "framer-motion"
+import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion"
 
 import { cn } from "@/lib/utils"
 
-interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  animateOnAppear?: boolean;
-}
+type CardProps = Omit<React.HTMLAttributes<HTMLDivElement>, "onDrag"> &
+  HTMLMotionProps<"div"> & {
+    animateOnAppear?: boolean;
+  };
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, animateOnAppear = true, ...props }, ref) => {
@@ -26,6 +27,8 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     };
 
     if (!animateOnAppear) {
+      // Filter out motion-specific props when using regular div
+      const { onDrag: _onDrag, onDragStart: _onDragStart, onDragEnd: _onDragEnd, onAnimationStart: _onAnimationStart, onAnimationComplete: _onAnimationComplete, ...htmlProps } = props;
       return (
         <div
           ref={ref}
@@ -33,7 +36,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
             "rounded-2xl border border-trim-silver/20 bg-asphalt text-pearl shadow-xl",
             className
           )}
-          {...props}
+          {...htmlProps}
         />
       );
     }
@@ -49,6 +52,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
           "rounded-2xl border border-trim-silver/20 bg-asphalt text-pearl shadow-xl",
           className
         )}
+        {...props}
       />
     );
   }
