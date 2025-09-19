@@ -124,7 +124,7 @@ export default function FAQ() {
           <Accordion
             type="single"
             collapsible
-            className="bg-asphalt/40 backdrop-blur-sm rounded-3xl ring-1 ring-trim-silver/20 w-full border-0 px-6 lg:px-8 py-4 shadow-2xl"
+            className="bg-asphalt/40 backdrop-blur-sm rounded-3xl w-full border-0 px-6 lg:px-8 py-4 shadow-2xl"
           >
             {faqItems.map((item, index) => (
               <AccordionItem
