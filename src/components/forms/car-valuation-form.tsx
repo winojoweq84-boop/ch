@@ -7,45 +7,79 @@ import { z } from "zod";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { RateLockTimer } from "@/components/ui/rate-lock-timer";
 import { Car, Zap, Clock, CheckCircle } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 
-const carValuationSchema = z.object({
-  make: z.string().min(1, "Make is required"),
-  model: z.string().min(1, "Model is required"),
-  year: z.number().min(1990).max(new Date().getFullYear() + 1),
-  mileage: z.number().min(0).max(999999),
-  condition: z.enum(["excellent", "good", "fair", "poor"]),
-  location: z.string().min(1, "Location is required"),
-  email: z.string().email("Valid email is required"),
-  phone: z.string().min(10, "Valid phone number is required"),
-  utm_source: z.string().optional(),
-  utm_campaign: z.string().optional(),
-});
+const EMIRATES = [
+  "Dubai",
+  "Abu Dhabi",
+  "Sharjah",
+  "Ajman",
+  "Ras Al Khaimah",
+  "Umm Al Quwain",
+  "Fujairah",
+  "Other",
+] as const;
 
-type CarValuationForm = z.infer<typeof carValuationSchema>;
+const TOKENS = [
+  "USDC",
+  "ETH",
+  "SOL",
+  "USDT",
+  "BTC",
+  "BNB",
+  "XRP",
+  "TRX",
+  "ADA",
+  "MATIC",
+  "Other",
+] as const;
 
-const carMakes = [
-  "Toyota", "Honda", "Nissan", "BMW", "Mercedes-Benz", "Audi", "Volkswagen",
-  "Hyundai", "Kia", "Mazda", "Ford", "Chevrolet", "Lexus", "Infiniti",
-  "Porsche", "Jaguar", "Land Rover", "Mitsubishi", "Subaru", "Other"
-];
+const schema = z
+  .object({
+    name: z.string().min(2, "Please enter your full name"),
+    city: z.enum(EMIRATES, { message: "Select your city" }),
+    otherCity: z.string().optional(),
+    phone: z
+      .string()
+      .trim()
+      .regex(/^\+?\d[\d\s\-()]{7,}$/i, "Enter a valid phone number"),
+    email: z.string().email("Enter a valid email"),
+    payoutType: z.enum(["crypto", "cash"], {
+      message: "Choose payout method",
+    }),
+    token: z
+      .enum(TOKENS)
+      .optional(), // required only if payoutType=crypto
+    otherToken: z.string().optional(),
+  })
+  .superRefine((val, ctx) => {
+    if (val.city === "Other" && !val.otherCity) {
+      ctx.addIssue({
+        path: ["otherCity"],
+        code: z.ZodIssueCode.custom,
+        message: "Type your city/emirate",
+      });
+    }
+    if (val.payoutType === "crypto" && !val.token) {
+      ctx.addIssue({
+        path: ["token"],
+        code: z.ZodIssueCode.custom,
+        message: "Select a crypto",
+      });
+    }
+    if (val.payoutType === "crypto" && val.token === "Other" && !val.otherToken) {
+      ctx.addIssue({
+        path: ["otherToken"],
+        code: z.ZodIssueCode.custom,
+        message: "Type your preferred token",
+      });
+    }
+  });
 
-const conditions = [
-  { value: "excellent", label: "Excellent", description: "Like new, no issues" },
-  { value: "good", label: "Good", description: "Minor wear, well maintained" },
-  { value: "fair", label: "Fair", description: "Some wear, needs minor repairs" },
-  { value: "poor", label: "Poor", description: "Significant wear or damage" },
-];
-
-const locations = [
-  "Dubai", "Abu Dhabi", "Sharjah", "Ajman", "Ras Al Khaimah", 
-  "Fujairah", "Umm Al Quwain", "Al Ain"
-];
+type FormValues = z.infer<typeof schema>;
 
 export function CarValuationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -55,38 +89,48 @@ export function CarValuationForm() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
-  } = useForm<CarValuationForm>({
-    resolver: zodResolver(carValuationSchema),
-    defaultValues: {
-      utm_source: "website",
-      utm_campaign: "homepage",
-    },
+  } = useForm<FormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: { payoutType: "crypto" },
   });
 
-  const onSubmit = async (data: CarValuationForm) => {
+  const payoutType = watch("payoutType");
+  const token = watch("token");
+  const selectedCity = watch("city");
+
+  const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Mock valuation calculation
-    const baseValue = 50000; // Base value for demo
-    const yearMultiplier = (data.year - 1990) / 30; // 0-1 based on year
-    const mileageMultiplier = Math.max(0, 1 - (data.mileage / 200000)); // 0-1 based on mileage
-    const conditionMultiplier = {
-      excellent: 1.0,
-      good: 0.85,
-      fair: 0.7,
-      poor: 0.5,
-    }[data.condition];
-    
-    const marketValue = Math.round(baseValue * yearMultiplier * mileageMultiplier * conditionMultiplier);
-    const cryptoValue = Math.round(marketValue * 1.2); // 20% premium
-    
-    setEstimatedValue(cryptoValue);
-    setShowResult(true);
-    setIsSubmitting(false);
+    try {
+      // Prepare payload with normalized city
+      const payload = {
+        name: data.name,
+        city: data.city === "Other" ? data.otherCity : data.city, // normalized
+        phone: data.phone,
+        email: data.email,
+        payout: {
+          type: data.payoutType,
+          token: data.payoutType === "crypto" ? data.token : undefined,
+          otherToken: data.payoutType === "crypto" && data.token === "Other" ? data.otherToken : undefined,
+        },
+        source: "hero_form_compact",
+      };
+
+      console.log("Form payload:", payload);
+      
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Mock valuation - for crypto payout, show higher value
+      const baseValue = payoutType === "crypto" ? 45000 : 38000;
+      setEstimatedValue(baseValue);
+      setShowResult(true);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (showResult) {
@@ -104,7 +148,7 @@ export function CarValuationForm() {
               </div>
             </div>
             <CardTitle className="text-2xl text-pearl">Your Crypto Offer</CardTitle>
-            <p className="text-slate-400">Based on your car details</p>
+            <p className="text-slate-400">Based on your preferences</p>
           </CardHeader>
           <CardContent className="text-center space-y-6">
             <div>
@@ -113,23 +157,25 @@ export function CarValuationForm() {
               </p>
               <Badge variant="default" className="mb-4 bg-desert-gold text-carbon">
                 <Zap className="h-3 w-3 mr-1" />
-                +20% Crypto Premium
+                {payoutType === "crypto" ? "+18% Crypto Premium" : "Market Rate"}
               </Badge>
             </div>
 
             <div className="space-y-3 text-sm">
               <div className="flex items-center justify-between">
-                <span className="text-slate-400">Market Value:</span>
+                <span className="text-slate-400">Base Value:</span>
                 <span className="text-pearl tabular-nums">
-                  {formatPrice(Math.round(estimatedValue / 1.2))}
+                  {formatPrice(payoutType === "crypto" ? Math.round(estimatedValue / 1.18) : estimatedValue)}
                 </span>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-slate-400">Crypto Premium:</span>
-                <span className="text-desert-gold tabular-nums">
-                  +{formatPrice(Math.round(estimatedValue * 0.2))}
-                </span>
-              </div>
+              {payoutType === "crypto" && (
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-400">Crypto Premium:</span>
+                  <span className="text-desert-gold tabular-nums">
+                    +{formatPrice(Math.round(estimatedValue * 0.18))}
+                  </span>
+                </div>
+              )}
             </div>
 
             <div className="flex justify-center">
@@ -152,7 +198,7 @@ export function CarValuationForm() {
                 className="w-full"
                 onClick={() => setShowResult(false)}
               >
-                Get New Valuation
+                Get New Offer
               </Button>
             </div>
 
@@ -179,156 +225,149 @@ export function CarValuationForm() {
             </div>
           </div>
           <CardTitle className="text-2xl text-pearl">Get Your Crypto Offer</CardTitle>
-          <p className="text-slate-400">Tell us about your car and get an instant valuation</p>
+          <p className="text-slate-400">Tell us about yourself and get an instant offer</p>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            {/* Car Details */}
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="make">Make *</Label>
-                <select
-                  id="make"
-                  {...register("make")}
-                  className="flex h-9 w-full rounded-md border border-trim-silver/30 bg-asphalt px-3 py-1 text-sm text-pearl shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-taillight-red disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  <option value="">Select make</option>
-                  {carMakes.map((make) => (
-                    <option key={make} value={make}>
-                      {make}
-                    </option>
-                  ))}
-                </select>
-                {errors.make && (
-                  <p className="text-xs text-taillight-red">{errors.make.message}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="model">Model *</Label>
-                <Input
-                  id="model"
-                  placeholder="e.g., Camry, Accord"
-                  {...register("model")}
-                />
-                {errors.model && (
-                  <p className="text-xs text-taillight-red">{errors.model.message}</p>
-                )}
-              </div>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* Name */}
+            <div>
+              <label className="block text-sm mb-1 text-pearl">Full name *</label>
+              <input
+                {...register("name")}
+                type="text"
+                placeholder="Your name"
+                className="w-full rounded-md bg-carbon border border-trim-silver/30 px-3 py-2 text-pearl placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-taillight-red"
+              />
+              {errors.name && <p className="text-xs text-taillight-red mt-1">{errors.name.message}</p>}
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="year">Year *</Label>
-                <Input
-                  id="year"
-                  type="number"
-                  placeholder="2020"
-                  {...register("year", { valueAsNumber: true })}
-                />
-                {errors.year && (
-                  <p className="text-xs text-taillight-red">{errors.year.message}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="mileage">Mileage (km) *</Label>
-                <Input
-                  id="mileage"
-                  type="number"
-                  placeholder="50000"
-                  {...register("mileage", { valueAsNumber: true })}
-                />
-                {errors.mileage && (
-                  <p className="text-xs text-taillight-red">{errors.mileage.message}</p>
-                )}
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label>Condition *</Label>
-              <div className="grid grid-cols-2 gap-3">
-                {conditions.map((condition) => (
-                  <label
-                    key={condition.value}
-                    className="flex items-center space-x-3 p-3 rounded-lg border border-trim-silver/20 bg-carbon/50 hover:bg-carbon/70 cursor-pointer transition-colors"
-                  >
-                    <input
-                      type="radio"
-                      value={condition.value}
-                      {...register("condition")}
-                      className="text-taillight-red focus:ring-taillight-red"
-                    />
-                    <div>
-                      <div className="text-sm font-medium text-pearl">
-                        {condition.label}
-                      </div>
-                      <div className="text-xs text-slate-400">
-                        {condition.description}
-                      </div>
-                    </div>
-                  </label>
-                ))}
-              </div>
-              {errors.condition && (
-                <p className="text-xs text-taillight-red">{errors.condition.message}</p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="location">Location *</Label>
+            {/* City */}
+            <div>
+              <label className="block text-sm mb-1 text-pearl">City / Emirate *</label>
               <select
-                id="location"
-                {...register("location")}
-                className="flex h-9 w-full rounded-md border border-trim-silver/30 bg-asphalt px-3 py-1 text-sm text-pearl shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-taillight-red disabled:cursor-not-allowed disabled:opacity-50"
+                {...register("city")}
+                className="w-full rounded-md bg-carbon border border-trim-silver/30 px-3 py-2 text-pearl focus:outline-none focus:ring-1 focus:ring-taillight-red"
+                defaultValue=""
               >
-                <option value="">Select location</option>
-                {locations.map((location) => (
-                  <option key={location} value={location}>
-                    {location}
+                <option value="" disabled>
+                  Select city
+                </option>
+                {EMIRATES.map((e) => (
+                  <option key={e} value={e}>
+                    {e}
                   </option>
                 ))}
               </select>
-              {errors.location && (
-                <p className="text-xs text-taillight-red">{errors.location.message}</p>
+              {errors.city && <p className="text-xs text-taillight-red mt-1">{errors.city.message}</p>}
+              
+              {/* Extra field when city=Other */}
+              {selectedCity === "Other" && (
+                <div className="mt-3">
+                  <label className="block text-sm mb-1 text-pearl">City/Emirate (Other) *</label>
+                  <input
+                    {...register("otherCity")}
+                    type="text"
+                    placeholder="Type your city/emirate"
+                    className="w-full rounded-md bg-carbon border border-trim-silver/30 px-3 py-2 text-pearl placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-taillight-red"
+                  />
+                  {errors.otherCity && <p className="text-xs text-taillight-red mt-1">{errors.otherCity.message}</p>}
+                </div>
               )}
             </div>
 
-            {/* Contact Details */}
-            <div className="space-y-4 pt-4">
-              <h3 className="font-saira text-lg font-semibold text-pearl">
-                Contact Information
-              </h3>
-              
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email *</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="your@email.com"
-                    {...register("email")}
-                  />
-                  {errors.email && (
-                    <p className="text-xs text-taillight-red">{errors.email.message}</p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone *</Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder="+971 XX XXX XXXX"
-                    {...register("phone")}
-                  />
-                  {errors.phone && (
-                    <p className="text-xs text-taillight-red">{errors.phone.message}</p>
-                  )}
-                </div>
+            {/* Contact */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm mb-1 text-pearl">Phone *</label>
+                <input
+                  {...register("phone")}
+                  type="tel"
+                  placeholder="+971 XX XXX XXXX"
+                  inputMode="tel"
+                  className="w-full rounded-md bg-carbon border border-trim-silver/30 px-3 py-2 text-pearl placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-taillight-red"
+                />
+                {errors.phone && <p className="text-xs text-taillight-red mt-1">{errors.phone.message}</p>}
+              </div>
+              <div>
+                <label className="block text-sm mb-1 text-pearl">Email *</label>
+                <input
+                  {...register("email")}
+                  type="email"
+                  placeholder="you@email.com"
+                  className="w-full rounded-md bg-carbon border border-trim-silver/30 px-3 py-2 text-pearl placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-taillight-red"
+                />
+                {errors.email && <p className="text-xs text-taillight-red mt-1">{errors.email.message}</p>}
               </div>
             </div>
 
+            {/* Payout method */}
+            <div className="space-y-2">
+              <label className="block text-sm text-pearl">Payout method *</label>
+              <div className="flex flex-wrap gap-3">
+                <label className="inline-flex items-center gap-2 text-pearl cursor-pointer">
+                  <input 
+                    type="radio" 
+                    value="crypto" 
+                    {...register("payoutType")}
+                    className="text-taillight-red focus:ring-taillight-red"
+                  />
+                  <span>Crypto <span className="text-desert-gold">(better terms)</span></span>
+                </label>
+                <label className="inline-flex items-center gap-2 text-pearl cursor-pointer">
+                  <input 
+                    type="radio" 
+                    value="cash" 
+                    {...register("payoutType")}
+                    className="text-taillight-red focus:ring-taillight-red"
+                  />
+                  <span>Cash</span>
+                </label>
+              </div>
+              {errors.payoutType && (
+                <p className="text-xs text-taillight-red">{errors.payoutType.message}</p>
+              )}
+            </div>
+
+            {/* Token select (conditional) */}
+            {payoutType === "crypto" && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm mb-1 text-pearl">Crypto token *</label>
+                  <select
+                    {...register("token")}
+                    defaultValue=""
+                    className="w-full rounded-md bg-carbon border border-trim-silver/30 px-3 py-2 text-pearl focus:outline-none focus:ring-1 focus:ring-taillight-red"
+                  >
+                    <option value="" disabled>
+                      Select token
+                    </option>
+                    {TOKENS.map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.token && <p className="text-xs text-taillight-red mt-1">{errors.token.message}</p>}
+                </div>
+
+                {token === "Other" && (
+                  <div>
+                    <label className="block text-sm mb-1 text-pearl">Preferred token</label>
+                    <input
+                      {...register("otherToken")}
+                      type="text"
+                      placeholder="e.g., TON, AVAX"
+                      className="w-full rounded-md bg-carbon border border-trim-silver/30 px-3 py-2 text-pearl placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-taillight-red"
+                    />
+                    {errors.otherToken && (
+                      <p className="text-xs text-taillight-red mt-1">{errors.otherToken.message}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Submit */}
             <Button
               type="submit"
               size="lg"
@@ -345,7 +384,7 @@ export function CarValuationForm() {
               ) : (
                 <>
                   <Zap className="h-4 w-4 mr-2" />
-                  Get My Crypto Offer
+                  Get My Offer
                 </>
               )}
             </Button>

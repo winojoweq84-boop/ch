@@ -113,7 +113,7 @@ export default function Steps() {
 
   return (
     <section 
-      id="steps" 
+      id="how-it-works" 
       data-testid="steps-section"
       data-analytics="steps"
       className="relative bg-carbon text-pearl py-12 lg:py-16"
@@ -156,6 +156,24 @@ export default function Steps() {
             <StepCard key={step.id} step={step} index={index} />
           ))}
         </div>
+
+        {/* CTA Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          viewport={{ once: true }}
+          className="mt-8 md:mt-10 flex justify-center"
+        >
+          <a
+            href="#offer-form"
+            className="inline-flex items-center px-6 py-3 rounded-xl bg-taillight-red hover:bg-taillight-red/90 transition-colors text-base font-semibold text-white animate-taillight-pulse"
+            aria-label="Get My Offer"
+            data-cta="get_my_offer_steps"
+          >
+            ⚡ Get My Offer
+          </a>
+        </motion.div>
       </div>
     </section>
   );

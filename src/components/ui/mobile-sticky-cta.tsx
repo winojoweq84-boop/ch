@@ -16,13 +16,13 @@ export function MobileStickyCTA() {
           size="lg" 
           className="bg-taillight-red hover:bg-[#ff1a12] text-white flex-shrink-0"
           data-analytics="mobile-sticky-cta"
-          data-cta="crypto-offer"
+          data-cta="get-my-offer"
           asChild
         >
-          <Link href="/valuation">
+          <a href="#offer-form">
             <Zap className="w-4 h-4 mr-2" />
-            Get Offer
-          </Link>
+            Get My Offer
+          </a>
         </Button>
       </div>
     </div>

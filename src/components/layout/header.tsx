@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Car, Menu, X, Globe } from "lucide-react";
+import { Car, Menu, X } from "lucide-react";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -52,12 +52,8 @@ export function Header() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="outline" size="sm">
-              <Globe className="h-4 w-4 mr-2" />
-              EN
-            </Button>
-            <Button size="sm" data-analytics="header-cta" data-cta="get-offer">
-              Get My Crypto Offer
+            <Button size="sm" data-analytics="header-cta" data-cta="get-offer" asChild>
+              <a href="#offer-form">Get My Offer</a>
             </Button>
           </div>
 
@@ -109,13 +105,9 @@ export function Header() {
               >
                 Contact
               </a>
-              <div className="px-3 py-2 space-y-2">
-                <Button variant="outline" size="sm" className="w-full">
-                  <Globe className="h-4 w-4 mr-2" />
-                  EN
-                </Button>
-                <Button size="sm" className="w-full" data-analytics="mobile-header-cta" data-cta="get-offer">
-                  Get My Crypto Offer
+              <div className="px-3 py-2">
+                <Button size="sm" className="w-full" data-analytics="mobile-header-cta" data-cta="get-offer" asChild>
+                  <a href="#offer-form">Get My Offer</a>
                 </Button>
               </div>
             </div>

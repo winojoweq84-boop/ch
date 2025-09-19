@@ -137,10 +137,13 @@ export function OfferComparison() {
                   className="w-full bg-taillight-red hover:bg-taillight-red/90 animate-taillight-pulse" 
                   size="lg"
                   data-analytics="comparison-cta"
-                  data-cta="get-crypto-offer"
+                  data-cta="get-my-offer"
+                  asChild
                 >
-                  <Zap className="h-4 w-4 mr-2" />
-                  Get My Crypto Offer
+                  <a href="#offer-form">
+                    <Zap className="h-4 w-4 mr-2" />
+                    Get My Offer
+                  </a>
                 </Button>
               </CardContent>
             </Card>

@@ -135,9 +135,12 @@ export function HowItWorks() {
                   className="animate-taillight-pulse"
                   data-analytics="how-it-works-cta"
                   data-cta="get-offer"
+                  asChild
                 >
-                  <Zap className="h-4 w-4 mr-2" />
-                  Get My Crypto Offer
+                  <a href="#offer-form">
+                    <Zap className="h-4 w-4 mr-2" />
+                    Get My Offer
+                  </a>
                 </Button>
                 <Button variant="outline" size="lg">
                   Learn More

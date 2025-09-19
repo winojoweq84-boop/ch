@@ -104,13 +104,13 @@ function Hero() {
               size="lg" 
               className={`bg-taillight-red hover:bg-taillight-red/90 text-white border-0 rounded-xl px-6 py-3 font-semibold transition-all duration-200 ${!shouldReduceMotion ? 'hover:scale-[1.02] active:scale-[0.98]' : ''}`}
               data-analytics="hero" 
-              data-cta="crypto-offer"
+              data-cta="get-my-offer"
               asChild
             >
-              <Link href="/valuation" className="flex items-center">
+              <a href="#offer-form" className="flex items-center">
                 <Zap className="w-4 h-4 mr-2" />
-                Get My Crypto Offer
-              </Link>
+                Get My Offer
+              </a>
             </Button>
             <Button 
               size="lg" 
