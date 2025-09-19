@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BlurredStagger } from "@/components/ui/blurred-stagger-text";
 import { Zap, ArrowRight } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 
 function Hero() {
   const shouldReduceMotion = useReducedMotion();
@@ -105,10 +107,10 @@ function Hero() {
               data-cta="crypto-offer"
               asChild
             >
-              <a href="/valuation" className="flex items-center">
+              <Link href="/valuation" className="flex items-center">
                 <Zap className="w-4 h-4 mr-2" />
                 Get My Crypto Offer
-              </a>
+              </Link>
             </Button>
             <Button 
               size="lg" 
@@ -181,7 +183,7 @@ function Hero() {
           className="lg:col-span-6 relative"
         >
           <div className="relative">
-            <img 
+            <Image 
               src="/images/mercedes-hero.png" 
               alt="Mercedes-Benz S-Class AMG luxury sedan" 
               width={600}

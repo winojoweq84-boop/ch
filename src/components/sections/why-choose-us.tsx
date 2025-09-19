@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Clock } from "lucide-react";
+import Image from "next/image";
 
 // Feature data
 const FEATURES = [
@@ -74,9 +75,11 @@ function FeatureCard({ feature, index }: { feature: typeof FEATURES[0], index: n
             className="w-full lg:w-1/2"
           >
             <div className="relative">
-              <img 
+              <Image 
                 src={feature.image}
                 alt={`${feature.title} - CarVault`}
+                width={600}
+                height={400}
                 className="w-full rounded-2xl shadow-xl object-cover aspect-[4/3]"
               />
               {/* Subtle overlay */}

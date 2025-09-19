@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Zap } from "lucide-react";
+import Link from "next/link";
 
 export function MobileStickyCTA() {
   return (
@@ -18,10 +19,10 @@ export function MobileStickyCTA() {
           data-cta="crypto-offer"
           asChild
         >
-          <a href="/valuation">
+          <Link href="/valuation">
             <Zap className="w-4 h-4 mr-2" />
             Get Offer
-          </a>
+          </Link>
         </Button>
       </div>
     </div>
