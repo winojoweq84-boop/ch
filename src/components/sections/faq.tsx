@@ -77,7 +77,7 @@ export default function FAQ() {
     <section 
       id="faq" 
       data-testid="faq-section" 
-      className="relative bg-carbon text-pearl py-16 lg:py-20"
+      className="relative bg-carbon text-pearl py-12 lg:py-16"
     >
       {/* Background texture */}
       <div 
@@ -130,7 +130,7 @@ export default function FAQ() {
               <AccordionItem
                 key={item.id}
                 value={item.id}
-                className="border-b border-trim-silver/10 last:border-b-0"
+                className="last:border-b-0"
               >
                 <AccordionTrigger className="cursor-pointer text-left text-lg font-semibold text-pearl hover:text-taillight-red hover:no-underline py-6 transition-colors duration-200">
                   {item.question}

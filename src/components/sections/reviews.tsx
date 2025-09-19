@@ -160,7 +160,7 @@ export default function Reviews() {
     <section 
       id="reviews" 
       data-testid="reviews-section" 
-      className="relative bg-carbon text-pearl py-16 lg:py-20"
+      className="relative bg-carbon text-pearl py-12 lg:py-16"
     >
       {/* Background texture */}
       <div 
@@ -292,7 +292,7 @@ export default function Reviews() {
               </div>
 
               {/* Navigation Controls - Inside Card */}
-              <div className="flex items-center justify-center gap-3 mt-6 pt-4 border-t border-trim-silver/10">
+              <div className="flex items-center justify-center gap-3 mt-6 pt-4">
                 <Button
                   variant="ghost"
                   size="sm"

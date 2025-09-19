@@ -29,7 +29,7 @@ export function ValuationFormSection() {
   };
 
   return (
-    <section className="py-16 lg:py-24 bg-carbon">
+    <section className="py-12 lg:py-16 bg-carbon">
       <motion.div 
         variants={containerVariants}
         initial="hidden"
