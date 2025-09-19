@@ -132,7 +132,7 @@ export function HowItWorks() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
                   size="lg" 
-                  className="animate-taillight-pulse"
+                  className="bg-taillight-red hover:bg-taillight-red/90 text-white animate-taillight-pulse"
                   data-analytics="how-it-works-cta"
                   data-cta="get-offer"
                   asChild

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Car, Menu, X } from "lucide-react";
+import { Car, Menu, X, Zap } from "lucide-react";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -53,7 +53,10 @@ export function Header() {
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
             <Button size="sm" data-analytics="header-cta" data-cta="get-offer" asChild>
-              <a href="#offer-form">Get My Offer</a>
+              <a href="#offer-form" className="flex items-center">
+                <Zap className="w-4 h-4 mr-2" />
+                Get My Offer
+              </a>
             </Button>
           </div>
 
@@ -107,7 +110,10 @@ export function Header() {
               </a>
               <div className="px-3 py-2">
                 <Button size="sm" className="w-full" data-analytics="mobile-header-cta" data-cta="get-offer" asChild>
-                  <a href="#offer-form">Get My Offer</a>
+                  <a href="#offer-form" className="flex items-center justify-center">
+                    <Zap className="w-4 h-4 mr-2" />
+                    Get My Offer
+                  </a>
                 </Button>
               </div>
             </div>

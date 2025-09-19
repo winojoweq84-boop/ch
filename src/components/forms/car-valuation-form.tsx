@@ -371,7 +371,7 @@ export function CarValuationForm() {
             <Button
               type="submit"
               size="lg"
-              className="w-full"
+              className="w-full bg-taillight-red hover:bg-taillight-red/90 text-white"
               disabled={isSubmitting}
               data-analytics="valuation-form-submit"
               data-cta="get-valuation"

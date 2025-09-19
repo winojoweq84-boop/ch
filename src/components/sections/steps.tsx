@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { CarFront, ClipboardCheck, Wallet } from "lucide-react";
+import { CarFront, ClipboardCheck, Wallet, Zap } from "lucide-react";
 import { getAssetPath } from "@/lib/basepath";
 
 // Step data with icons and content
@@ -171,7 +171,8 @@ export default function Steps() {
             aria-label="Get My Offer"
             data-cta="get_my_offer_steps"
           >
-            ⚡ Get My Offer
+            <Zap className="w-4 h-4 mr-2" />
+            Get My Offer
           </a>
         </motion.div>
       </div>

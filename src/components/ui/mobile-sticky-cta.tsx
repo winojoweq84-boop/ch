@@ -19,7 +19,7 @@ export function MobileStickyCTA() {
           data-cta="get-my-offer"
           asChild
         >
-          <a href="#offer-form">
+          <a href="#offer-form" className="flex items-center">
             <Zap className="w-4 h-4 mr-2" />
             Get My Offer
           </a>
