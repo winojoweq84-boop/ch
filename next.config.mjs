@@ -1,6 +1,5 @@
 // next.config.mjs
-const REPO = 'car' // <-- repo (subfolder) on GitHub Pages
-
+const REPO = process.env.NEXT_PUBLIC_REPO || 'car';
 const isPages = process.env.GITHUB_PAGES === 'true' || process.env.NODE_ENV === 'production';
 
 export default {

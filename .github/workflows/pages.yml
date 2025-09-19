@@ -1,7 +1,7 @@
-name: Deploy to GitHub Pages
+name: Deploy Next.js static export to GitHub Pages
 on:
   push:
-    branches: [ master, main ]
+    branches: [ main, master ]
 permissions:
   contents: read
   pages: write
@@ -23,6 +23,7 @@ jobs:
       - run: npm run pages:build
         env:
           GITHUB_PAGES: "true"
+          NEXT_PUBLIC_REPO: "car"
       - run: npm run pages:post
       - uses: actions/upload-pages-artifact@v3
         with:

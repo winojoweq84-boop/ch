@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "export": "next export",
-    "pages:build": "cross-env GITHUB_PAGES=true next build",
+    "export": "next export -o out",
+    "pages:build": "cross-env GITHUB_PAGES=true NEXT_PUBLIC_REPO=car next build && next export -o out",
     "pages:post": "cp -f public/404.html out/404.html || true && touch out/.nojekyll",
     "start": "next start",
     "lint": "eslint"
