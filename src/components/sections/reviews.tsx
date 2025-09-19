@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { Star, Quote, ChevronLeft, ChevronRight, AlertTriangle, CheckCircle } from "lucide-react";
+import { getAssetPath } from "@/lib/basepath";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { BlurredStagger } from "@/components/ui/blurred-stagger-text";
@@ -165,7 +166,8 @@ export default function Reviews() {
       {/* Background texture */}
       <div 
         aria-hidden 
-        className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(60%_60%_at_50%_50%,#000_40%,transparent_100%)] bg-[url('/images/patterns/grille-hex.svg')] opacity-[0.04]" 
+        className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(60%_60%_at_50%_50%,#000_40%,transparent_100%)] opacity-[0.04]"
+        style={{ backgroundImage: `url(${getAssetPath('/images/patterns/grille-hex.svg')})` }} 
       />
 
       <motion.div

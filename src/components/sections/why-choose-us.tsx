@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Clock } from "lucide-react";
 import Image from "next/image";
+import { getAssetPath } from "@/lib/basepath";
 
 // Feature data
 const FEATURES = [
@@ -155,7 +156,8 @@ export default function WhyChooseUs() {
       {/* Background texture */}
       <div 
         aria-hidden 
-        className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(60%_60%_at_50%_50%,#000_40%,transparent_100%)] bg-[url('/images/patterns/grille-hex.svg')] opacity-[0.03]" 
+        className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(60%_60%_at_50%_50%,#000_40%,transparent_100%)] opacity-[0.03]"
+        style={{ backgroundImage: `url(${getAssetPath('/images/patterns/grille-hex.svg')})` }} 
       />
 
       <motion.div

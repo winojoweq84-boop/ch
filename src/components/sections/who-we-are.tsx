@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { BlurredStagger } from "@/components/ui/blurred-stagger-text";
 import { Handshake, Building2, Smile, CheckCircle2 } from "lucide-react";
+import { getAssetPath } from "@/lib/basepath";
 
 export default function WhoWeAre() {
   const shouldReduceMotion = useReducedMotion();
@@ -152,7 +153,8 @@ export default function WhoWeAre() {
       {/* Background texture (very subtle) */}
       <div 
         aria-hidden 
-        className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(60%_60%_at_20%_10%,#000_40%,transparent_100%)] bg-[url('/images/patterns/grille-hex.svg')] opacity-[0.06]" 
+        className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(60%_60%_at_20%_10%,#000_40%,transparent_100%)] opacity-[0.06]"
+        style={{ backgroundImage: `url(${getAssetPath('/images/patterns/grille-hex.svg')})` }} 
       />
     </section>
   );

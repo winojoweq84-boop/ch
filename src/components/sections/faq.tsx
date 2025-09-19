@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { BlurredStagger } from "@/components/ui/blurred-stagger-text";
 import { HelpCircle, MessageCircle } from "lucide-react";
+import { getAssetPath } from "@/lib/basepath";
 
 export default function FAQ() {
   const shouldReduceMotion = useReducedMotion();
@@ -82,7 +83,8 @@ export default function FAQ() {
       {/* Background texture */}
       <div 
         aria-hidden 
-        className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(60%_60%_at_50%_50%,#000_40%,transparent_100%)] bg-[url('/images/patterns/grille-hex.svg')] opacity-[0.04]" 
+        className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(60%_60%_at_50%_50%,#000_40%,transparent_100%)] opacity-[0.04]"
+        style={{ backgroundImage: `url(${getAssetPath('/images/patterns/grille-hex.svg')})` }} 
       />
 
       <motion.div

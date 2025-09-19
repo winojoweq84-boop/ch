@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { CarFront, ClipboardCheck, Wallet } from "lucide-react";
+import { getAssetPath } from "@/lib/basepath";
 
 // Step data with icons and content
 const STEPS = [
@@ -120,7 +121,8 @@ export default function Steps() {
       {/* Background texture */}
       <div 
         aria-hidden 
-        className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(60%_60%_at_50%_50%,#000_40%,transparent_100%)] bg-[url('/images/patterns/grille-hex.svg')] opacity-[0.03]" 
+        className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(60%_60%_at_50%_50%,#000_40%,transparent_100%)] opacity-[0.03]"
+        style={{ backgroundImage: `url(${getAssetPath('/images/patterns/grille-hex.svg')})` }} 
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
