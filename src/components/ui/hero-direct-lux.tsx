@@ -15,6 +15,9 @@ export default function HeroDirectLux({
   carImage = "/images/nano-banana-2025-09-22T13-30-18-1.png",
   carImageAlt = "Luxury car showcase for sale in UAE with instant crypto payout"
 }: HeroDirectLuxProps) {
+  // Apply basePath for GitHub Pages
+  const basePath = process.env.GITHUB_PAGES === 'true' ? '/car' : '';
+  const imageSrc = `${basePath}${carImage}`;
   const shouldReduceMotion = useReducedMotion();
 
   const containerVariants = {
@@ -212,7 +215,7 @@ export default function HeroDirectLux({
           >
             <div className="relative w-full max-w-md lg:max-w-none">
               <Image 
-                src={carImage} 
+                src={imageSrc} 
                 alt={carImageAlt}
                 width={600}
                 height={400}

@@ -8,6 +8,10 @@ import { getAssetPath } from "@/lib/basepath";
 
 export default function WhoWeAre() {
   const shouldReduceMotion = useReducedMotion();
+  
+  // Apply basePath for GitHub Pages
+  const basePath = process.env.GITHUB_PAGES === 'true' ? '/car' : '';
+  const imageSrc = `${basePath}/images/unnamed-3.jpg`;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -63,7 +67,7 @@ export default function WhoWeAre() {
           className="order-1 lg:order-none lg:col-span-6 relative"
         >
           <Image
-            src="/images/unnamed-3.jpg"
+            src={imageSrc}
             alt="Luxury car showcase at CarVault"
             width={600}
             height={400}

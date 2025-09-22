@@ -10,6 +10,10 @@ import Image from "next/image";
 
 function Hero() {
   const shouldReduceMotion = useReducedMotion();
+  
+  // Apply basePath for GitHub Pages
+  const basePath = process.env.GITHUB_PAGES === 'true' ? '/car' : '';
+  const imageSrc = `${basePath}/images/nano-banana-2025-09-22T13-30-18-1.png`;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -184,7 +188,7 @@ function Hero() {
         >
           <div className="relative">
             <Image 
-              src="/images/nano-banana-2025-09-22T13-30-18-1.png" 
+              src={imageSrc} 
               alt="Luxury car showcase"
               width={600}
               height={400}

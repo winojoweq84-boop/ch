@@ -22,6 +22,10 @@ const FEATURES = [
 function FeatureCard({ feature, index }: { feature: typeof FEATURES[0], index: number }) {
   const shouldReduceMotion = useReducedMotion();
   const IconComponent = feature.icon;
+  
+  // Apply basePath for GitHub Pages
+  const basePath = process.env.GITHUB_PAGES === 'true' ? '/car' : '';
+  const imageSrc = `${basePath}${feature.image}`;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -77,7 +81,7 @@ function FeatureCard({ feature, index }: { feature: typeof FEATURES[0], index: n
           >
             <div className="relative">
               <Image 
-                src={feature.image}
+                src={imageSrc}
                 alt={`${feature.title} - CarVault`}
                 width={600}
                 height={400}
