@@ -14,7 +14,11 @@ const FEATURES = [
     title: "No branch visit needed",
     description: "Complete your car inspection online with video walk-around. No need to visit any branch - we handle everything remotely.",
     icon: Clock,
+<<<<<<< HEAD
     image: "/images/nano-banana-2025-09-22T13-00-51.png"
+=======
+    image: "/images/mercedes-hero.png"
+>>>>>>> 6ab1b78b882ddb0c1e1b7a69ad2632cda473de9c
   }
 ];
 

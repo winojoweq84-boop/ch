@@ -185,7 +185,11 @@ function Hero() {
           <div className="relative">
             <Image 
               src="/images/mercedes-hero.png" 
+<<<<<<< HEAD
               alt="Luxury car showcase" 
+=======
+              alt="Mercedes-Benz S-Class AMG luxury sedan" 
+>>>>>>> 6ab1b78b882ddb0c1e1b7a69ad2632cda473de9c
               width={600}
               height={400}
               className="w-full rounded-2xl shadow-xl object-cover aspect-[3/2]"

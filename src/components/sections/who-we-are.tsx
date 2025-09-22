@@ -63,8 +63,13 @@ export default function WhoWeAre() {
           className="order-1 lg:order-none lg:col-span-6 relative"
         >
           <Image
+<<<<<<< HEAD
             src="/images/unnamed (3).jpg"
             alt="Luxury car showcase at CarVault"
+=======
+            src="/images/mercedes-hero.png"
+            alt="Mercedes-Benz S-Class AMG luxury sedan at CarVault"
+>>>>>>> 6ab1b78b882ddb0c1e1b7a69ad2632cda473de9c
             width={600}
             height={400}
             sizes="(max-width: 1024px) 100vw, 50vw"
