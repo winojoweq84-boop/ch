@@ -12,7 +12,7 @@ interface HeroDirectLuxProps {
 }
 
 export default function HeroDirectLux({ 
-  carImage = "/images/mercedes-hero.png",
+  carImage = "/images/nano-banana-2025-09-22T13-30-18-1.png",
   carImageAlt = "Luxury car showcase for sale in UAE with instant crypto payout"
 }: HeroDirectLuxProps) {
   const shouldReduceMotion = useReducedMotion();

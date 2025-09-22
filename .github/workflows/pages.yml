@@ -33,8 +33,10 @@ jobs:
           GITHUB_PAGES: "true"
           NEXT_PUBLIC_REPO: "car"
       - run: npm run pages:post
-      - name: Show export dir (debug)
-        run: ls -la out
+      - name: List exported images (debug)
+        run: |
+          echo "Images under out/:"
+          find out -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.webp" -o -iname "*.svg" \) | sort | head -n 200
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./out

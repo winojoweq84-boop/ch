@@ -63,7 +63,7 @@ export default function WhoWeAre() {
           className="order-1 lg:order-none lg:col-span-6 relative"
         >
           <Image
-            src="/images/unnamed (3).jpg"
+            src="/images/unnamed-3.jpg"
             alt="Luxury car showcase at CarVault"
             width={600}
             height={400}

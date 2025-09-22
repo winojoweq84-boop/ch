@@ -184,7 +184,7 @@ function Hero() {
         >
           <div className="relative">
             <Image 
-              src="/images/mercedes-hero.png" 
+              src="/images/nano-banana-2025-09-22T13-30-18-1.png" 
               alt="Luxury car showcase"
               width={600}
               height={400}

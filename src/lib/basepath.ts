@@ -1,17 +1,20 @@
 // Utility to handle basePath for GitHub Pages deployment
 export function getBasePath(): string {
+  // Use the same logic as next.config.mjs for consistency
+  const REPO = process.env.NEXT_PUBLIC_REPO || 'car';
+  const isPagesBuild = process.env.GITHUB_PAGES === 'true';
+  
   // In production with GitHub Pages, we need to account for the basePath
   if (typeof window !== 'undefined') {
     // Client-side: check if we're on GitHub Pages
     const hostname = window.location.hostname;
     if (hostname.includes('github.io')) {
-      return '/car';
+      return `/${REPO}`;
     }
   }
   
   // Server-side or local development
-  const isPages = process.env.GITHUB_PAGES === 'true' || process.env.NODE_ENV === 'production';
-  return isPages ? '/car' : '';
+  return isPagesBuild ? `/${REPO}` : '';
 }
 
 export function getAssetPath(path: string): string {
