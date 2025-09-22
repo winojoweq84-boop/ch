@@ -15,6 +15,9 @@
   --slate-400: #94A3B8;
   --white: #FFFFFF;
 
+  /* Header height for smooth scrolling offset */
+  --header-h: 64px; /* 4rem = 64px for mobile */
+
   /* shadcn/ui base colors */
   --background: 0 0% 100%;
   --foreground: 222.2 84% 4.9%;
@@ -148,6 +151,13 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Desktop header height */
+@media (min-width: 1024px) {
+  :root {
+    --header-h: 64px; /* Same as mobile for now, adjust if needed */
+  }
 }
 
 body {

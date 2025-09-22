@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Car, Menu, X, Zap } from "lucide-react";
+import AnchorLink from "@/components/system/AnchorLink";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,39 +25,39 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a
+            <AnchorLink
               href="#how-it-works"
               className="text-sm font-medium text-pearl hover:text-taillight-red transition-colors"
             >
               How It Works
-            </a>
-            <a
-              href="#pricing"
+            </AnchorLink>
+            <AnchorLink
+              href="#why-choose-us"
               className="text-sm font-medium text-pearl hover:text-taillight-red transition-colors"
             >
               Pricing
-            </a>
-            <a
-              href="#about"
+            </AnchorLink>
+            <AnchorLink
+              href="#who-we-are"
               className="text-sm font-medium text-pearl hover:text-taillight-red transition-colors"
             >
               About
-            </a>
-            <a
-              href="#contact"
+            </AnchorLink>
+            <AnchorLink
+              href="#offer-form"
               className="text-sm font-medium text-pearl hover:text-taillight-red transition-colors"
             >
               Contact
-            </a>
+            </AnchorLink>
           </nav>
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
             <Button size="sm" data-analytics="header-cta" data-cta="get-offer" asChild>
-              <a href="#offer-form" className="flex items-center">
+              <AnchorLink href="#offer-form" className="flex items-center" ariaLabel="Get My Offer">
                 <Zap className="w-4 h-4 mr-2" />
                 Get My Offer
-              </a>
+              </AnchorLink>
             </Button>
           </div>
 
@@ -80,40 +81,40 @@ export function Header() {
         {isMenuOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 border-t border-trim-silver/20">
-              <a
+              <AnchorLink
                 href="#how-it-works"
                 className="block px-3 py-2 text-base font-medium text-pearl hover:text-taillight-red hover:bg-asphalt rounded-md transition-colors"
-                onClick={() => setIsMenuOpen(false)}
+                onNavigate={() => setIsMenuOpen(false)}
               >
                 How It Works
-              </a>
-              <a
-                href="#pricing"
+              </AnchorLink>
+              <AnchorLink
+                href="#why-choose-us"
                 className="block px-3 py-2 text-base font-medium text-pearl hover:text-taillight-red hover:bg-asphalt rounded-md transition-colors"
-                onClick={() => setIsMenuOpen(false)}
+                onNavigate={() => setIsMenuOpen(false)}
               >
                 Pricing
-              </a>
-              <a
-                href="#about"
+              </AnchorLink>
+              <AnchorLink
+                href="#who-we-are"
                 className="block px-3 py-2 text-base font-medium text-pearl hover:text-taillight-red hover:bg-asphalt rounded-md transition-colors"
-                onClick={() => setIsMenuOpen(false)}
+                onNavigate={() => setIsMenuOpen(false)}
               >
                 About
-              </a>
-              <a
-                href="#contact"
+              </AnchorLink>
+              <AnchorLink
+                href="#offer-form"
                 className="block px-3 py-2 text-base font-medium text-pearl hover:text-taillight-red hover:bg-asphalt rounded-md transition-colors"
-                onClick={() => setIsMenuOpen(false)}
+                onNavigate={() => setIsMenuOpen(false)}
               >
                 Contact
-              </a>
+              </AnchorLink>
               <div className="px-3 py-2">
                 <Button size="sm" className="w-full" data-analytics="mobile-header-cta" data-cta="get-offer" asChild>
-                  <a href="#offer-form" className="flex items-center justify-center">
+                  <AnchorLink href="#offer-form" className="flex items-center justify-center" ariaLabel="Get My Offer" onNavigate={() => setIsMenuOpen(false)}>
                     <Zap className="w-4 h-4 mr-2" />
                     Get My Offer
-                  </a>
+                  </AnchorLink>
                 </Button>
               </div>
             </div>
