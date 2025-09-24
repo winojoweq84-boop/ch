@@ -70,7 +70,7 @@ function FeatureCard({ feature, index }: { feature: typeof FEATURES[0], index: n
       viewport={{ once: true, margin: "-100px" }}
       className="w-full py-12 lg:py-16"
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-safe no-x-scroll">
         <div className={`flex flex-col gap-8 lg:gap-12 lg:items-center ${
           index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row'
         }`}>

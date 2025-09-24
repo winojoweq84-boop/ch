@@ -92,7 +92,7 @@ export default function FAQ() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
-        className="max-w-4xl mx-auto px-6 lg:px-8"
+        className="max-w-4xl mx-auto px-safe no-x-scroll"
       >
         {/* Section Header */}
         <motion.div 

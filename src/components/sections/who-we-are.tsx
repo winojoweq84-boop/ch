@@ -59,7 +59,7 @@ export default function WhoWeAre() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
-        className="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-16 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center"
+        className="max-w-7xl mx-auto px-safe py-12 lg:py-16 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center no-x-scroll"
       >
         {/* LEFT: IMAGE (lg:col-span-6) */}
         <motion.figure 

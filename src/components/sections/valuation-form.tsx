@@ -35,7 +35,7 @@ export function ValuationFormSection() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
-        className="container mx-auto px-4 sm:px-6 lg:px-8"
+        className="container mx-auto px-safe no-x-scroll"
       >
         <motion.div variants={itemVariants}>
           <CarValuationForm />

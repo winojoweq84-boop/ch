@@ -4,20 +4,37 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export default function Footer() {
+  // Apply basePath for GitHub Pages
+  const basePath = process.env.GITHUB_PAGES === 'true' ? '/car' : '';
+  const logoSrc = `${basePath}/images/3893893399.png`;
+
   return (
-    <footer className="border-t border-white/10 bg-[#0A0A0B]">
+    <footer className="border-t border-white/10 bg-[#0A0A0B] no-x-scroll px-safe">
       <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
         <div className="grid gap-10 md:grid-cols-3">
           {/* Brand / Tagline */}
           <div>
-            <div className="flex items-center">
+            <div className="flex items-center gap-3 text-white">
               <Image
-                src="/images/3893893399.png"
+                src={logoSrc}
                 alt="CarVault UAE Logo"
                 width={900}
                 height={110}
                 className="h-18 md:h-24 w-auto object-contain"
+                priority
+                onError={(e) => {
+                  // Fallback to text logo if image fails to load
+                  e.currentTarget.style.display = 'none';
+                  const parent = e.currentTarget.parentElement;
+                  if (parent && !parent.querySelector('.text-logo-fallback')) {
+                    const textLogo = document.createElement('div');
+                    textLogo.className = 'text-logo-fallback text-2xl md:text-3xl font-bold text-white';
+                    textLogo.innerHTML = '<span class="text-white">CAR</span> <span class="text-blue-400">VAULT</span>';
+                    parent.appendChild(textLogo);
+                  }
+                }}
               />
+              <span className="sr-only">CarVault</span>
             </div>
 
             <p className="mt-4 max-w-md text-neutral-300">

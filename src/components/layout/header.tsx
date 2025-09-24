@@ -56,7 +56,7 @@ export default function Header() {
         )}
         role="banner"
       >
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 md:h-24 lg:px-8">
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-safe md:h-24">
           {/* LOGO — wider on mobile only */}
           <Link
             href="/"
@@ -119,7 +119,7 @@ export default function Header() {
             menuOpen ? 'max-h-96' : 'max-h-0'
           )}
         >
-          <nav aria-label="Mobile" className="space-y-1 border-t border-white/10 bg-[#0A0A0B]/95 px-4 py-3">
+          <nav aria-label="Mobile" className="space-y-1 border-t border-white/10 bg-[#0A0A0B]/95 px-safe py-3">
             <a onClick={() => setMenuOpen(false)} href="#how-it-works" className="block rounded-md px-3 py-2 text-neutral-200 hover:bg-white/5">How It Works</a>
             <a onClick={() => setMenuOpen(false)} href="#why-choose-us" className="block rounded-md px-3 py-2 text-neutral-200 hover:bg-white/5">Pricing</a>
             <a onClick={() => setMenuOpen(false)} href="#who-we-are" className="block rounded-md px-3 py-2 text-neutral-200 hover:bg-white/5">About</a>

@@ -60,7 +60,7 @@ export default function HeroDirectLux({
     <section 
       id="hero" 
       data-testid="hero" 
-      className="relative overflow-hidden bg-carbon text-pearl"
+      className="relative overflow-hidden bg-carbon text-pearl no-x-scroll px-safe"
     >
 
       <motion.div
@@ -120,7 +120,7 @@ export default function HeroDirectLux({
           {/* Crypto Badge Line */}
           <motion.div 
             variants={itemVariants}
-            className="flex flex-wrap gap-2 mb-6 lg:mb-8 justify-center lg:justify-start"
+            className="flex flex-wrap items-center gap-2 sm:gap-3 w-full mb-6 lg:mb-8 justify-center lg:justify-start"
           >
             {cryptoCoins.map((coin, index) => (
               <motion.div
@@ -171,7 +171,7 @@ export default function HeroDirectLux({
           {/* CTAs */}
           <motion.div 
             variants={itemVariants}
-            className="flex flex-col lg:flex-row items-stretch lg:items-center gap-3 lg:gap-4 mb-6"
+            className="mt-5 flex w-full flex-col sm:flex-row gap-3 sm:gap-4 mb-6"
           >
             <Button 
               size="lg" 
@@ -219,7 +219,8 @@ export default function HeroDirectLux({
                 alt={carImageAlt}
                 width={600}
                 height={400}
-                className="w-full rounded-2xl shadow-xl object-cover aspect-[3/2]"
+                className="w-full h-auto object-cover rounded-xl"
+                sizes="(max-width: 768px) 100vw, 50vw"
                 priority
               />
             </div>

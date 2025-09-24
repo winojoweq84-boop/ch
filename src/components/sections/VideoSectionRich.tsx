@@ -23,7 +23,7 @@ export default function VideoSectionRich() {
   }, []);
 
   return (
-    <section id="video" className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8">
+    <section id="video" className="relative mx-auto max-w-7xl px-safe py-16 no-x-scroll">
       <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
         {/* Text column */}
         <div className="space-y-6">

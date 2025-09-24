@@ -125,7 +125,7 @@ export default function Steps() {
         style={{ backgroundImage: `url(${getAssetPath('/images/patterns/grille-hex.svg')})` }} 
       />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-safe no-x-scroll">
         <motion.div
           variants={containerVariants}
           initial="hidden"

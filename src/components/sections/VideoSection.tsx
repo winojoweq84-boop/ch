@@ -89,20 +89,74 @@ export default function VideoSection() {
   }, []);
 
   return (
-    <section id="video" aria-labelledby="video-heading" className="relative">
-      <h2 id="video-heading" className="sr-only">Intro video</h2>
+    <section id="how-it-works" className="no-x-scroll px-safe">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        {/* Text block — first on mobile, second on desktop if desired */}
+        <div className="order-1 md:order-2">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">How CarVault Works</h2>
+          <p className="mt-3 text-neutral-300 mb-6">
+            Fast, fair, and stress-free across the UAE. Online valuation, quick video
+            walk-through, instant pricing, and same-day payout & paperwork.
+          </p>
+          <div className="space-y-4">
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-6 h-6 bg-plate-green rounded-full flex items-center justify-center">
+                <span className="text-white text-sm font-bold">1</span>
+              </div>
+              <div>
+                <h3 className="font-semibold text-white">Submit Your Car Details</h3>
+                <p className="text-neutral-300 text-sm">Tell us about your car and get an instant valuation</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-6 h-6 bg-plate-green rounded-full flex items-center justify-center">
+                <span className="text-white text-sm font-bold">2</span>
+              </div>
+              <div>
+                <h3 className="font-semibold text-white">Quick Video Inspection</h3>
+                <p className="text-neutral-300 text-sm">Share a short video walkthrough of your car</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-6 h-6 bg-plate-green rounded-full flex items-center justify-center">
+                <span className="text-white text-sm font-bold">3</span>
+              </div>
+              <div>
+                <h3 className="font-semibold text-white">Get Your Offer</h3>
+                <p className="text-neutral-300 text-sm">Receive a fair market price offer within hours</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-6 h-6 bg-plate-green rounded-full flex items-center justify-center">
+                <span className="text-white text-sm font-bold">4</span>
+              </div>
+              <div>
+                <h3 className="font-semibold text-white">Same-Day Settlement</h3>
+                <p className="text-neutral-300 text-sm">Complete paperwork and get paid instantly</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      {/* Main responsive Vimeo embed */}
-      <div ref={wrapRef} className="relative mx-auto aspect-video w-full max-w-5xl">
-        <iframe
-          ref={mainRef}
-          src={mainSrc}
-          title="CarVault — intro"
-          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-          allowFullScreen
-          referrerPolicy="strict-origin-when-cross-origin"
-          className="absolute inset-0 h-full w-full rounded-xl border-0 shadow-[0_10px_30px_rgba(0,0,0,0.35)]"
-        />
+        {/* Video block — second on mobile, sticky on desktop */}
+        <div className="order-2 md:order-1 w-full">
+          <div className="relative w-full overflow-hidden rounded-2xl">
+            {/* Remove sticky on mobile; keep sticky on desktop only */}
+            <div className="md:sticky md:top-24">
+              {/* Keep your existing Vimeo embed component or iframe wrapper */}
+              <div className="relative pt-[56.25%]">
+                <iframe
+                  ref={mainRef}
+                  src={mainSrc}
+                  className="absolute inset-0 h-full w-full rounded-2xl"
+                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  title="intro"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Sticky bottom mini-player (desktop only) */}

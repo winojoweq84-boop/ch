@@ -70,7 +70,7 @@ function Hero() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
-        className="max-w-7xl mx-auto px-6 lg:px-8 pt-24 pb-12 lg:pt-32 lg:pb-16 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10"
+        className="max-w-7xl mx-auto px-safe pt-24 pb-12 lg:pt-32 lg:pb-16 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 no-x-scroll"
       >
         {/* Left Column */}
         <div className="lg:col-span-6">
