@@ -1,134 +1,122 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Menu, X, Zap } from "lucide-react";
-import AnchorLink from "@/components/system/AnchorLink";
-import Image from "next/image";
+import Link from 'next/link';
+import { useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
+import Image from 'next/image';
 
-export function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+export default function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [showHeader, setShowHeader] = useState(true);
+  const [atTop, setAtTop] = useState(true);
+  const lastY = useRef(0);
+  const ticking = useRef(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (ticking.current) return;
+      ticking.current = true;
+
+      window.requestAnimationFrame(() => {
+        const y = window.scrollY || 0;
+        setAtTop(y < 8);
+
+        // Hide on scroll down, show on scroll up
+        if (!menuOpen) {
+          if (y > lastY.current + 6) setShowHeader(false); // down
+          else if (y < lastY.current - 6) setShowHeader(true); // up
+        } else {
+          // Keep header visible while the mobile menu is open
+          setShowHeader(true);
+        }
+
+        lastY.current = y;
+        ticking.current = false;
+      });
+    };
+
+    // Reduced motion: keep header visible always
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (prefersReducedMotion.matches) return;
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [menuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-trim-silver/20 bg-carbon/95 backdrop-blur supports-[backdrop-filter]:bg-carbon/60">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 p-1">
-              <Image
-                src="/images/logo.png"
-                alt="CarVault Logo"
-                width={32}
-                height={32}
-                className="h-6 w-6 object-contain"
-              />
-            </div>
-            <span className="font-saira text-xl font-bold text-pearl">
-              CarVault
-            </span>
-            <span className="text-sm text-slate-400">UAE</span>
-          </div>
+    <>
+      {/* Spacer to prevent content jump because header is fixed */}
+      <div className="h-16 md:h-20" />
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <AnchorLink
-              href="#how-it-works"
-              className="text-sm font-medium text-pearl hover:text-taillight-red transition-colors"
-            >
-              How It Works
-            </AnchorLink>
-            <AnchorLink
-              href="#why-choose-us"
-              className="text-sm font-medium text-pearl hover:text-taillight-red transition-colors"
-            >
-              Pricing
-            </AnchorLink>
-            <AnchorLink
-              href="#who-we-are"
-              className="text-sm font-medium text-pearl hover:text-taillight-red transition-colors"
-            >
-              About
-            </AnchorLink>
-            <AnchorLink
-              href="#offer-form"
-              className="text-sm font-medium text-pearl hover:text-taillight-red transition-colors"
-            >
-              Contact
-            </AnchorLink>
+      <header
+        className={clsx(
+          'fixed inset-x-0 top-0 z-50 transition-transform duration-300 will-change-transform',
+          showHeader ? 'translate-y-0' : '-translate-y-full',
+          atTop ? 'bg-transparent' : 'bg-[#0A0A0B]/90 backdrop-blur supports-[backdrop-filter]:backdrop-blur'
+        )}
+        role="banner"
+      >
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 md:h-20 lg:px-8">
+          {/* LOGO — wider on mobile only */}
+          <Link
+            href="/"
+            aria-label="CarVault Home"
+            className="inline-flex items-center gap-2"
+          >
+            <Image
+              src="/images/3893893399.png"
+              alt="CarVault UAE Logo"
+              width={800}
+              height={120}
+              className="h-12 md:h-16 w-auto object-contain max-w-[200px] md:max-w-[300px]"
+              priority
+            />
+          </Link>
+
+          {/* Desktop nav */}
+          <nav className="hidden items-center gap-6 md:flex" aria-label="Primary">
+            <a href="#how-it-works" className="text-sm text-neutral-200 hover:text-white">How It Works</a>
+            <a href="#why-choose-us" className="text-sm text-neutral-200 hover:text-white">Pricing</a>
+            <a href="#who-we-are" className="text-sm text-neutral-200 hover:text-white">About</a>
+            <a href="#offer-form" className="text-sm text-neutral-200 hover:text-white">Contact</a>
           </nav>
 
-          {/* Desktop Actions */}
-          <div className="hidden md:flex items-center space-x-4">
-            <Button size="sm" data-analytics="header-cta" data-cta="get-offer" asChild>
-              <AnchorLink href="#offer-form" className="flex items-center" ariaLabel="Get My Offer">
-                <Zap className="w-4 h-4 mr-2" />
-                Get My Offer
-              </AnchorLink>
-            </Button>
-          </div>
-
-          {/* Mobile menu button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
+          {/* Burger (mobile) */}
+          <button
+            type="button"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            aria-label="Open menu"
+            onClick={() => setMenuOpen((v) => !v)}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/10 bg-white/5 text-white md:hidden"
           >
-            {isMenuOpen ? (
-              <X className="h-5 w-5" />
-            ) : (
-              <Menu className="h-5 w-5" />
-            )}
-          </Button>
+            <svg viewBox="0 0 24 24" className="h-5 w-5">
+              {menuOpen ? (
+                <path className="fill-white" d="M18 6L6 18M6 6l12 12" />
+              ) : (
+                <path className="fill-white" d="M4 7h16M4 12h16M4 17h16" />
+              )}
+            </svg>
+          </button>
         </div>
 
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 border-t border-trim-silver/20">
-              <AnchorLink
-                href="#how-it-works"
-                className="block px-3 py-2 text-base font-medium text-pearl hover:text-taillight-red hover:bg-asphalt rounded-md transition-colors"
-                onNavigate={() => setIsMenuOpen(false)}
-              >
-                How It Works
-              </AnchorLink>
-              <AnchorLink
-                href="#why-choose-us"
-                className="block px-3 py-2 text-base font-medium text-pearl hover:text-taillight-red hover:bg-asphalt rounded-md transition-colors"
-                onNavigate={() => setIsMenuOpen(false)}
-              >
-                Pricing
-              </AnchorLink>
-              <AnchorLink
-                href="#who-we-are"
-                className="block px-3 py-2 text-base font-medium text-pearl hover:text-taillight-red hover:bg-asphalt rounded-md transition-colors"
-                onNavigate={() => setIsMenuOpen(false)}
-              >
-                About
-              </AnchorLink>
-              <AnchorLink
-                href="#offer-form"
-                className="block px-3 py-2 text-base font-medium text-pearl hover:text-taillight-red hover:bg-asphalt rounded-md transition-colors"
-                onNavigate={() => setIsMenuOpen(false)}
-              >
-                Contact
-              </AnchorLink>
-              <div className="px-3 py-2">
-                <Button size="sm" className="w-full" data-analytics="mobile-header-cta" data-cta="get-offer" asChild>
-                  <AnchorLink href="#offer-form" className="flex items-center justify-center" ariaLabel="Get My Offer" onNavigate={() => setIsMenuOpen(false)}>
-                    <Zap className="w-4 h-4 mr-2" />
-                    Get My Offer
-                  </AnchorLink>
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </header>
+        {/* Mobile menu panel */}
+        <div
+          id="mobile-menu"
+          className={clsx(
+            'md:hidden transition-[max-height] duration-300 overflow-hidden',
+            menuOpen ? 'max-h-96' : 'max-h-0'
+          )}
+        >
+          <nav aria-label="Mobile" className="space-y-1 border-t border-white/10 bg-[#0A0A0B]/95 px-4 py-3">
+            <a onClick={() => setMenuOpen(false)} href="#how-it-works" className="block rounded-md px-3 py-2 text-neutral-200 hover:bg-white/5">How It Works</a>
+            <a onClick={() => setMenuOpen(false)} href="#why-choose-us" className="block rounded-md px-3 py-2 text-neutral-200 hover:bg-white/5">Pricing</a>
+            <a onClick={() => setMenuOpen(false)} href="#who-we-are" className="block rounded-md px-3 py-2 text-neutral-200 hover:bg-white/5">About</a>
+            <a onClick={() => setMenuOpen(false)} href="#offer-form" className="block rounded-md px-3 py-2 text-neutral-200 hover:bg-white/5">Contact</a>
+          </nav>
+        </div>
+      </header>
+    </>
   );
 }
 

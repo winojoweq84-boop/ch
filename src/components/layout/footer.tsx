@@ -10,17 +10,14 @@ export default function Footer() {
         <div className="grid gap-10 md:grid-cols-3">
           {/* Brand / Tagline */}
           <div>
-            <div className="flex items-center gap-2">
-              <div className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 p-1">
-                <Image
-                  src="/images/logo.png"
-                  alt="CarVault Logo"
-                  width={32}
-                  height={32}
-                  className="h-6 w-6 object-contain"
-                />
-              </div>
-              <p className="text-xl font-semibold text-white">CarVault <span className="text-neutral-400">UAE</span></p>
+            <div className="flex items-center">
+              <Image
+                src="/images/3893893399.png"
+                alt="CarVault UAE Logo"
+                width={900}
+                height={110}
+                className="h-18 md:h-24 w-auto object-contain"
+              />
             </div>
 
             <p className="mt-4 max-w-md text-neutral-300">

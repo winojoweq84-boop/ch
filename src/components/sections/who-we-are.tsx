@@ -49,11 +49,7 @@ export default function WhoWeAre() {
 
   return (
     <section 
-<<<<<<< HEAD
-      id="about" 
-=======
       id="who-we-are" 
->>>>>>> 153a1c1346bf295ead69b72d0c73d3ede6c73468
       data-testid="who-section" 
       data-analytics="who"
       className="relative bg-carbon text-pearl"

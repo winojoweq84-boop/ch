@@ -236,7 +236,6 @@ body {
   body {
     @apply bg-background text-foreground;
   }
-<<<<<<< HEAD
 }
 
 /* Sticky video hover controls */
@@ -246,6 +245,4 @@ body {
 }
 .group:hover video::-webkit-media-controls { 
   opacity: 1; 
-=======
->>>>>>> 153a1c1346bf295ead69b72d0c73d3ede6c73468
 }

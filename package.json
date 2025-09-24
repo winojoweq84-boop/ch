@@ -9,12 +9,8 @@
     "pages:build": "cross-env GITHUB_PAGES=true NEXT_PUBLIC_REPO=car next build",
     "pages:post": "mkdir -p out && cp -f public/404.html out/404.html 2>/dev/null || true && touch out/.nojekyll",
     "start": "next start",
-<<<<<<< HEAD
     "lint": "eslint",
     "scrub:pii": "node scripts/scrub-pii.js"
-=======
-    "lint": "eslint"
->>>>>>> 153a1c1346bf295ead69b72d0c73d3ede6c73468
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -49,10 +45,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
     "tailwindcss": "^4",
-<<<<<<< HEAD
     "ts-node": "^10.9.2",
-=======
->>>>>>> 153a1c1346bf295ead69b72d0c73d3ede6c73468
     "typescript": "^5"
   }
 }
