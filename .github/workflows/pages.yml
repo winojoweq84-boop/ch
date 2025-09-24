@@ -1,0 +1,51 @@
+name: Deploy Next.js static export to GitHub Pages
+on:
+  push:
+    branches: [ main, master ]
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fail on unresolved merge conflicts
+        run: |
+          if git grep -nE '^(<<<<<<<|>>>>>>>|=======)$' -- . ':!package-lock.json'; then
+            echo "Unresolved merge conflict markers found. Resolve them before pushing."
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run pages:build
+        env:
+          GITHUB_PAGES: "true"
+          NEXT_PUBLIC_REPO: "car"
+      - run: npm run pages:post
+      - name: List exported images (debug)
+        run: |
+          echo "Images under out/:"
+          find out -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.webp" -o -iname "*.svg" \) | sort | head -n 200
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
