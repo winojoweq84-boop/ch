@@ -2,9 +2,14 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+<<<<<<< HEAD
 import { Menu, X, Zap } from "lucide-react";
 import AnchorLink from "@/components/system/AnchorLink";
 import Image from "next/image";
+=======
+import { Car, Menu, X, Zap } from "lucide-react";
+import AnchorLink from "@/components/system/AnchorLink";
+>>>>>>> 153a1c1346bf295ead69b72d0c73d3ede6c73468
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,6 +20,7 @@ export function Header() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-2">
+<<<<<<< HEAD
             <div className="flex h-8 w-8 items-center justify-center">
               <Image
                 src="/images/logo.png"
@@ -26,6 +32,13 @@ export function Header() {
             </div>
             <span className="font-saira text-xl font-bold text-pearl">
               CarVault
+=======
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-taillight-red">
+              <Car className="h-5 w-5 text-white" />
+            </div>
+            <span className="font-saira text-xl font-bold text-pearl">
+              CryptoCar
+>>>>>>> 153a1c1346bf295ead69b72d0c73d3ede6c73468
             </span>
             <span className="text-sm text-slate-400">UAE</span>
           </div>

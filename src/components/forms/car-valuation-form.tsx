@@ -293,7 +293,11 @@ export function CarValuationForm() {
                 <input
                   {...register("email")}
                   type="email"
+<<<<<<< HEAD
                   placeholder="your@email.com"
+=======
+                  placeholder="you@email.com"
+>>>>>>> 153a1c1346bf295ead69b72d0c73d3ede6c73468
                   className="w-full rounded-md bg-carbon border border-trim-silver/30 px-3 py-2 text-pearl placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-taillight-red"
                 />
                 {errors.email && <p className="text-xs text-taillight-red mt-1">{errors.email.message}</p>}

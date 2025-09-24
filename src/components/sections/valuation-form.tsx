@@ -29,7 +29,11 @@ export function ValuationFormSection() {
   };
 
   return (
+<<<<<<< HEAD
     <section id="contact" className="py-12 lg:py-16 bg-carbon">
+=======
+    <section id="offer-form" className="py-12 lg:py-16 bg-carbon">
+>>>>>>> 153a1c1346bf295ead69b72d0c73d3ede6c73468
       <motion.div 
         variants={containerVariants}
         initial="hidden"
