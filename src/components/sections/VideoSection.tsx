@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useRef, useEffect } from 'react';
+import { getAssetPath } from '@/lib/basepath';
 
 type Props = {
   id?: string;
@@ -17,8 +18,8 @@ export default function VideoSection({
   title = 'What We Do',
   kicker = 'CarVault',
   body = 'Direct buyout at real market price with same-day payout and full online process.',
-  videoSrc = '/videos/promo.mp4',
-  poster = '/videos/promo-poster.jpg',
+  videoSrc = getAssetPath('/videos/promo.mp4'),
+  poster = getAssetPath('/videos/promo-poster.jpg'),
 }: Props) {
   const vref = useRef<HTMLVideoElement | null>(null);
 

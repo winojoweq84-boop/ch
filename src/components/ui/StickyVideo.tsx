@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { getAssetPath } from '@/lib/basepath';
 
 const DISMISS_KEY = 'cv_sticky_video_dismissed_until';
 
@@ -17,8 +18,8 @@ function dismissed(): boolean {
 }
 
 export default function StickyVideo({
-  src = '/videos/promo.mp4',
-  poster = '/videos/promo-poster.jpg',
+  src = getAssetPath('/videos/promo.mp4'),
+  poster = getAssetPath('/videos/promo-poster.jpg'),
   watchSectionId = 'video', // ID of the main section to observe
 }: { src?: string; poster?: string; watchSectionId?: string }) {
   const vid = useRef<HTMLVideoElement | null>(null);

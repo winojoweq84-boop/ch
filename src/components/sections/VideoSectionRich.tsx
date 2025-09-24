@@ -3,6 +3,7 @@
 import { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { getAssetPath } from '@/lib/basepath';
 
 const SHOW_CRYPTO =
   typeof process !== 'undefined' && process.env.NEXT_PUBLIC_SHOW_CRYPTO_COPY === 'true';
@@ -55,8 +56,8 @@ export default function VideoSectionRich() {
             <video
               ref={vref}
               className="h-full w-full object-cover"
-              src="/videos/intro.mp4"
-              poster="/videos/intro-poster.jpg"
+              src={getAssetPath('/videos/intro.mp4')}
+              poster={getAssetPath('/videos/intro-poster.jpg')}
               autoPlay
               muted
               loop
