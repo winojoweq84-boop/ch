@@ -46,7 +46,7 @@ export default function Header() {
   return (
     <>
       {/* Spacer to prevent content jump because header is fixed */}
-      <div className="h-16 md:h-20" />
+      <div className="h-20 md:h-24" />
 
       <header
         className={clsx(
@@ -56,7 +56,7 @@ export default function Header() {
         )}
         role="banner"
       >
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 md:h-20 lg:px-8">
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 md:h-24 lg:px-8">
           {/* LOGO — wider on mobile only */}
           <Link
             href="/"
@@ -68,8 +68,19 @@ export default function Header() {
               alt="CarVault UAE Logo"
               width={800}
               height={120}
-              className="h-16 md:h-24 w-auto object-contain max-w-[280px] md:max-w-[500px]"
+              className="h-20 md:h-28 w-auto object-contain max-w-[320px] md:max-w-[600px]"
               priority
+              onError={(e) => {
+                // Fallback to text logo if image fails to load
+                e.currentTarget.style.display = 'none';
+                const parent = e.currentTarget.parentElement;
+                if (parent && !parent.querySelector('.text-logo-fallback')) {
+                  const textLogo = document.createElement('div');
+                  textLogo.className = 'text-logo-fallback text-2xl md:text-3xl font-bold text-white';
+                  textLogo.innerHTML = '<span class="text-white">CAR</span> <span class="text-blue-400">VAULT</span>';
+                  parent.appendChild(textLogo);
+                }
+              }}
             />
           </Link>
 
@@ -88,13 +99,13 @@ export default function Header() {
             aria-controls="mobile-menu"
             aria-label="Open menu"
             onClick={() => setMenuOpen((v) => !v)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/10 bg-white/5 text-white md:hidden"
+            className="inline-flex h-12 w-12 items-center justify-center rounded-lg border-2 border-white/20 bg-white/10 text-white shadow-lg backdrop-blur-sm hover:bg-white/20 transition-all duration-200 md:hidden"
           >
-            <svg viewBox="0 0 24 24" className="h-5 w-5">
+            <svg viewBox="0 0 24 24" className="h-6 w-6">
               {menuOpen ? (
-                <path className="fill-white" d="M18 6L6 18M6 6l12 12" />
+                <path className="fill-white stroke-white stroke-2" d="M18 6L6 18M6 6l12 12" />
               ) : (
-                <path className="fill-white" d="M4 7h16M4 12h16M4 17h16" />
+                <path className="fill-white stroke-white stroke-2" d="M4 7h16M4 12h16M4 17h16" />
               )}
             </svg>
           </button>
