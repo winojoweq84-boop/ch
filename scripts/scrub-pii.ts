@@ -8,7 +8,7 @@ const path = require('path');
 const root = process.cwd();
 const exts = new Set(['.ts', '.tsx', '.js', '.jsx', '.json', '.env', '.yml', '.md', '.css', '.scss']);
 
-const patterns = [
+const patterns: [string, RegExp][] = [
   ['email', /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i],
   ['phone', /\b(\+?\d[\d\s\-().]{7,})\b/],
   ['token', /\b(AIza|ghp_|gho_|ghu_|ghs_|sk-[a-zA-Z0-9-_]{8,}|eyJ[A-Za-z0-9._-]{10,})\b/],
@@ -32,7 +32,7 @@ let count = 0;
 
 for (const file of files) {
   const lines = fs.readFileSync(file, 'utf8').split('\n');
-  lines.forEach((line, i) => {
+  lines.forEach((line: string, i: number) => {
     patterns.forEach(([label, re]) => {
       if (re.test(line)) {
         count++;

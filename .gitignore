@@ -32,7 +32,6 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
-<<<<<<< HEAD
 !.env.example
 
 # secrets and sensitive files
@@ -41,8 +40,6 @@ yarn-error.log*
 *.p12
 secrets/
 .secrets/
-=======
->>>>>>> 153a1c1346bf295ead69b72d0c73d3ede6c73468
 
 # vercel
 .vercel

@@ -32,7 +32,7 @@ export default function VideoSectionRich() {
           </h2>
 
           <p className="text-neutral-300">
-            We're a Dubai-based buyer focused on premium cars. We inspect online, price at{' '}
+            We&apos;re a Dubai-based buyer focused on premium cars. We inspect online, price at{' '}
             <strong className="text-white">real market value</strong>, and settle{' '}
             <strong className="text-white">the same day</strong>
             {SHOW_CRYPTO ? ' with instant digital/crypto payout' : ' with instant transfer payout'}

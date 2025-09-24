@@ -21,7 +21,7 @@ export default function Footer() {
             </div>
 
             <p className="mt-4 max-w-md text-neutral-300">
-              The UAE's premier car buyout service with instant transfer payments. Get up to
+              The UAE&apos;s premier car buyout service with instant transfer payments. Get up to
               <span className="font-semibold text-white"> 5% more</span> than market price for your car.
             </p>
 
