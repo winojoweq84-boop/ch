@@ -68,7 +68,7 @@ export default function Header() {
               alt="CarVault UAE Logo"
               width={800}
               height={120}
-              className="h-12 md:h-16 w-auto object-contain max-w-[200px] md:max-w-[300px]"
+              className="h-16 md:h-24 w-auto object-contain max-w-[280px] md:max-w-[500px]"
               priority
             />
           </Link>

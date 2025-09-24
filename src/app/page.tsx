@@ -1,4 +1,4 @@
-import { Header } from "@/components/layout/header";
+import Header from "@/components/layout/header";
 import HeroDirectLux from "@/components/ui/hero-direct-lux";
 import { ValuationFormSection } from "@/components/sections/valuation-form";
 import WhoWeAre from "@/components/sections/who-we-are";

@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { BlurredStagger } from "@/components/ui/blurred-stagger-text";
-import { HelpCircle, MessageCircle } from "lucide-react";
+import { HelpCircle } from "lucide-react";
 import { getAssetPath } from "@/lib/basepath";
 
 export default function FAQ() {
@@ -147,25 +147,6 @@ export default function FAQ() {
           </Accordion>
         </motion.div>
 
-        {/* Contact Support */}
-        <motion.div 
-          variants={itemVariants}
-          className="mt-8 text-center"
-        >
-          <div className="inline-flex items-center gap-3 bg-asphalt/60 rounded-2xl px-6 py-4 ring-1 ring-trim-silver/15">
-            <MessageCircle className="h-5 w-5 text-desert-gold" />
-            <p className="text-slate-400">
-              Still have questions? Contact our{' '}
-              <a
-                href="#contact"
-                className="text-desert-gold font-medium hover:text-taillight-red transition-colors duration-200 hover:underline"
-              >
-                customer support team
-              </a>
-              {' '}for personalized assistance.
-            </p>
-          </div>
-        </motion.div>
       </motion.div>
     </section>
   );
