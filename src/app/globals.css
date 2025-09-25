@@ -265,9 +265,20 @@ html, body, #__next {
 /* Guard against rogue full-width blocks */
 .no-x-scroll { overflow-x: hidden; }
 
-/* Fine-tune for modern iPhone widths (390–430px) */
-@media (max-width: 430px) {
+/* Fine-tune for modern iPhone widths (390–460px) - iPhone 16, 16 Pro, 17 */
+@media (max-width: 460px) {
   .hero h1 { font-size: clamp(28px, 7vw, 36px); line-height: 1.12; }
   .hero p  { font-size: clamp(15px, 4vw, 18px); }
   .container, section, .w-screen { max-width: 100vw; }
+  
+  /* iPhone 16/16 Pro/17 specific optimizations */
+  @supports (-webkit-appearance: none) {
+    .hero section { padding-left: 4px; padding-right: 4px; }
+    .hero img { max-width: 100%; width: 100%; }
+  }
+}
+
+/* Specific for iPhone 16 Pro (430px) and 17 (likely 460px+) */
+@media (min-width: 390px) and (max-width: 460px) {
+  .hero .max-w-none { padding-left: 8px !important; padding-right: 8px !important; }
 }

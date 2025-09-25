@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { RateLockTimer } from "@/components/ui/rate-lock-timer";
 import { Car, Zap, Clock, CheckCircle } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
+import { BRANDS, MODELS } from "@/data/carOptions";
 
 const EMIRATES = [
   "Dubai",
@@ -54,6 +55,11 @@ const schema = z
       .enum(TOKENS)
       .optional(), // required only if payoutType=crypto
     otherToken: z.string().optional(),
+    // NEW: Brand and model fields
+    brand: z.enum(BRANDS as [string, ...string[]], { message: "Select your car brand" }),
+    model: z.string().min(1, "Please specify model"),
+    otherBrand: z.string().optional(),
+    otherModel: z.string().optional(),
   })
   .superRefine((val, ctx) => {
     if (val.city === "Other" && !val.otherCity) {
@@ -77,6 +83,21 @@ const schema = z
         message: "Type your preferred token",
       });
     }
+    // NEW: Brand/model validation
+    if (val.brand === "Other" && !val.otherBrand) {
+      ctx.addIssue({
+        path: ["otherBrand"],
+        code: z.ZodIssueCode.custom,
+        message: "Please specify your car brand",
+      });
+    }
+    if (val.brand === "Other" && !val.otherModel) {
+      ctx.addIssue({
+        path: ["otherModel"],
+        code: z.ZodIssueCode.custom,
+        message: "Please specify your car model",
+      });
+    }
   });
 
 type FormValues = z.infer<typeof schema>;
@@ -90,6 +111,7 @@ export function CarValuationForm() {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -99,16 +121,35 @@ export function CarValuationForm() {
   const payoutType = watch("payoutType");
   const token = watch("token");
   const selectedCity = watch("city");
+  const selectedBrand = watch("brand");
+
+  // Get available models based on selected brand
+  const modelOptions = useMemo(() => {
+    if (!selectedBrand || selectedBrand === "Other" || !(selectedBrand in MODELS)) return [];
+    return MODELS[selectedBrand as keyof typeof MODELS] || [];
+  }, [selectedBrand]);
+
+  // Reset dependent fields when brand changes
+  useEffect(() => {
+    if (selectedBrand && selectedBrand !== "Other") {
+      // Reset model when brand changes
+      setValue("model", "");
+      setValue("otherBrand", "");
+      setValue("otherModel", "");
+    }
+  }, [selectedBrand, setValue]);
 
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
     try {
-      // Prepare payload with normalized city
+      // Prepare payload with normalized city, brand, and model
       const payload = {
         name: data.name,
         city: data.city === "Other" ? data.otherCity : data.city, // normalized
         phone: data.phone,
         email: data.email,
+        brand: data.brand === "Other" ? data.otherBrand : data.brand, // normalized
+        model: (data.model === "Other" || data.brand === "Other") ? (data.otherModel || data.model) : data.model, // normalized
         payout: {
           type: data.payoutType,
           token: data.payoutType === "crypto" ? data.token : undefined,
@@ -119,8 +160,18 @@ export function CarValuationForm() {
 
       console.log("Form payload:", payload);
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Call API
+      const response = await fetch('/api/submit-valuation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit form');
+      }
       
       // Mock valuation - for crypto payout, show higher value
       const baseValue = payoutType === "crypto" ? 45000 : 38000;
@@ -298,6 +349,84 @@ export function CarValuationForm() {
                 />
                 {errors.email && <p className="text-xs text-taillight-red mt-1">{errors.email.message}</p>}
               </div>
+            </div>
+
+            {/* Car Brand and Model */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm mb-1 text-pearl">Car Brand *</label>
+                <select
+                  {...register("brand")}
+                  className="w-full rounded-md bg-carbon border border-trim-silver/30 px-3 py-2 text-pearl focus:outline-none focus:ring-1 focus:ring-taillight-red"
+                  defaultValue=""
+                >
+                  <option value="" disabled>Select a brand</option>
+                  {BRANDS.map((brand) => (
+                    <option key={brand} value={brand}>
+                      {brand}
+                    </option>
+                  ))}
+                </select>
+                {errors.brand && <p className="text-xs text-taillight-red mt-1">{errors.brand.message}</p>}
+              </div>
+
+              {selectedBrand && selectedBrand !== "Other" ? (
+                <div>
+                  <label className="block text-sm mb-1 text-pearl">Model *</label>
+                  <select
+                    {...register("model")}
+                    disabled={!modelOptions.length}
+                    className="w-full rounded-md bg-carbon border border-trim-silver/30 px-3 py-2 text-pearl focus:outline-none focus:ring-1 focus:ring-taillight-red disabled:opacity-50"
+                    defaultValue=""
+                  >
+                    <option value="" disabled>
+                      {modelOptions.length ? "Select a model" : "Select brand first"}
+                    </option>
+                    {modelOptions.map((model) => (
+                      <option key={model} value={model}>
+                        {model}
+                      </option>
+                    ))}
+                    <option value="Other">Other</option>
+                  </select>
+                  {errors.model && <p className="text-xs text-taillight-red mt-1">{errors.model.message}</p>}
+                </div>
+              ) : selectedBrand === "Other" ? (
+                <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm mb-1 text-pearl">Brand (Other) *</label>
+                    <input
+                      {...register("otherBrand")}
+                      type="text"
+                      placeholder="Enter brand name"
+                      className="w-full rounded-md bg-carbon border border-trim-silver/30 px-3 py-2 text-pearl placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-taillight-red"
+                    />
+                    {errors.otherBrand && <p className="text-xs text-taillight-red mt-1">{errors.otherBrand.message}</p>}
+                  </div>
+                  <div>
+                    <label className="block text-sm mb-1 text-pearl">Model (Other) *</label>
+                    <input
+                      {...register("otherModel")}
+                      type="text"
+                      placeholder="Enter model name"
+                      className="w-full rounded-md bg-carbon border border-trim-silver/30 px-3 py-2 text-pearl placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-taillight-red"
+                    />
+                    {errors.otherModel && <p className="text-xs text-taillight-red mt-1">{errors.otherModel.message}</p>}
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <label className="block text-sm mb-1 text-pearl">Model *</label>
+                  <input
+                    {...register("model")}
+                    type="text"
+                    placeholder="Enter car model"
+                    disabled
+                    className="w-full rounded-md bg-carbon border border-trim-silver/30 px-3 py-2 text-pearl placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-taillight-red disabled:opacity-50"
+                  />
+                  {errors.model && <p className="text-xs text-taillight-red mt-1">{errors.model.message}</p>}
+                </div>
+              )}
             </div>
 
             {/* Payout method */}

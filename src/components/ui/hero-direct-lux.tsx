@@ -12,7 +12,7 @@ interface HeroDirectLuxProps {
 }
 
 export default function HeroDirectLux({ 
-  carImage = "/images/nano-banana-2025-09-22T13-30-18-1.png",
+  carImage = "/images/783993.png",
   carImageAlt = "Luxury car showcase for sale in UAE with instant crypto payout"
 }: HeroDirectLuxProps) {
   // Apply basePath for GitHub Pages
@@ -68,7 +68,7 @@ export default function HeroDirectLux({
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
-        className="max-w-7xl mx-auto px-6 lg:px-8 pt-8 pb-8 lg:pt-12 lg:pb-12"
+        className="max-w-none mx-auto px-2 sm:px-4 pt-8 pb-8 lg:pt-12 lg:pb-12 lg:max-w-7xl lg:px-8"
       >
         {/* Mobile: Crypto Badge at Top */}
         <motion.div 
@@ -84,14 +84,14 @@ export default function HeroDirectLux({
         {/* Mobile: Main Title at Top */}
         <motion.h1 
           variants={itemVariants}
-          className="lg:hidden font-saira text-3xl/tight md:text-4xl font-bold text-pearl leading-tight text-center mb-6 px-4"
+          className="lg:hidden font-saira text-3xl/tight sm:text-4xl font-bold text-pearl leading-tight text-center mb-6 px-1"
         >
           <span className="text-desert-gold">We Buy Premium Cars</span> in the UAE — Get Paid in Crypto Today
         </motion.h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
           {/* Mobile: Image First, Desktop: Copy First */}
-          <div className="lg:col-span-6 lg:order-1 order-2 px-2 lg:px-0">
+          <div className="lg:col-span-6 lg:order-1 order-2 px-1 lg:px-0">
              {/* Desktop: Crypto Payout Badge */}
              <motion.div 
                variants={itemVariants}
@@ -112,7 +112,7 @@ export default function HeroDirectLux({
           {/* Subhead */}
           <motion.p 
             variants={itemVariants}
-            className="text-slate-400 text-lg leading-relaxed mb-6 lg:mb-8 max-w-xl text-center lg:text-left"
+            className="text-slate-400 text-sm sm:text-lg leading-relaxed mb-6 lg:mb-8 max-w-full sm:max-w-xl text-center lg:text-left px-1 sm:px-0"
           >
             Direct buyout, no middleman. Real market pricing with transparent offers—and instant crypto payout straight to your wallet.
           </motion.p>
@@ -211,16 +211,16 @@ export default function HeroDirectLux({
           {/* Mobile: Image First, Desktop: Image Second */}
           <motion.div 
             variants={imageVariants}
-            className="lg:col-span-6 lg:order-2 order-1 relative flex justify-center px-2 lg:px-0"
+            className="lg:col-span-6 lg:order-2 order-1 relative flex justify-center px-1 lg:px-0"
           >
-            <div className="relative w-full max-w-md lg:max-w-none">
+            <div className="relative w-full max-w-none sm:max-w-md lg:max-w-none">
               <Image 
                 src={imageSrc} 
                 alt={carImageAlt}
                 width={600}
                 height={400}
                 className="w-full h-auto object-cover rounded-xl"
-                sizes="(max-width: 768px) 100vw, 50vw"
+                sizes="(max-width: 640px) 100vw, (max-width: 768px) 90vw, 50vw"
                 priority
               />
             </div>
