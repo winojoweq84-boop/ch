@@ -46,7 +46,7 @@ function StepCard({ step, index }: { step: typeof STEPS[0], index: number }) {
       aria-label={`Step ${step.id}: ${step.title}`}
     >
       {/* Ghost Numeral */}
-      <div className="absolute -top-12 -left-12 lg:top-[-40px] lg:left-4 pointer-events-none">
+      <div className="absolute -top-12 -left-12 lg:top-[-40px] lg:left-2 pointer-events-none">
         <div 
           className="text-[6rem] sm:text-[8rem] lg:text-[220px] font-bold leading-none select-none"
           style={{ 
@@ -113,10 +113,10 @@ export default function Steps() {
 
   return (
     <section 
-      id="how-it-works" 
+      id="how-steps" 
       data-testid="steps-section"
       data-analytics="steps"
-      className="relative bg-carbon text-pearl py-12 lg:py-16"
+      className="section section--how-steps relative bg-carbon text-pearl"
     >
       {/* Background texture */}
       <div 
@@ -131,22 +131,23 @@ export default function Steps() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="text-center mb-10 lg:mb-20"
+          className="how-steps__header text-center"
         >
           {/* Main Heading */}
           <motion.h2 
             variants={itemVariants}
-            className="font-saira text-4xl/tight md:text-5xl lg:text-6xl font-bold mb-4"
+            className="font-saira text-4xl/tight md:text-5xl lg:text-6xl font-bold mb-4 text-balance"
           >
-            <span className="text-pearl">How CarVault Works</span>
+            <span className="text-pearl">From Quote to Pickup — in 3 Quick Steps</span>
           </motion.h2>
 
           {/* Caption */}
           <motion.p 
             variants={itemVariants}
-            className="text-slate-400 text-lg lg:text-xl max-w-2xl mx-auto"
+            className="text-slate-400 text-lg lg:text-xl max-w-2xl mx-auto muted"
           >
-            Fast, fair, and stress-free across the UAE.
+            No branches, no waiting. Share details, send a short video, and we&apos;ll handle
+            inspection, paperwork, and same-day payout.
           </motion.p>
         </motion.div>
 

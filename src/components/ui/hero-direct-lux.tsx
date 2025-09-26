@@ -60,7 +60,7 @@ export default function HeroDirectLux({
     <section 
       id="hero" 
       data-testid="hero" 
-      className="relative overflow-hidden bg-carbon text-pearl no-x-scroll px-safe"
+      className="section section--hero relative overflow-hidden bg-carbon text-pearl no-x-scroll px-safe"
     >
 
       <motion.div

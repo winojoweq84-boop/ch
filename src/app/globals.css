@@ -173,6 +173,33 @@ html {
   }
 }
 
+:root {
+  /* smaller, consistent vertical spacing for desktop sections */
+  --section-gap-desktop: clamp(48px, 6vh, 88px);
+  --section-gap-desktop-tight: clamp(24px, 3vh, 48px);
+}
+
+/* generic utility (apply to all top-level sections) */
+.section {
+  padding-block: var(--section-gap-desktop);
+}
+
+/* tighter hero top spacing (nav -> hero) */
+.section--hero {
+  padding-top: var(--section-gap-desktop-tight);
+}
+
+/* optional: slightly larger gap above/below the video + numbers blocks */
+.section--how-video   { padding-block: clamp(56px, 7vh, 96px); }
+.section--how-steps   { padding-block: clamp(56px, 7vh, 96px); }
+
+/* desktop only: ensure the big step numbers don't crowd the heading */
+@media (min-width: 1024px) {
+  .how-steps__header {
+    margin-bottom: 32px; /* pushes header higher above numbers */
+  }
+}
+
 body {
   background: var(--carbon);
   color: var(--pearl);

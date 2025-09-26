@@ -15,28 +15,22 @@ export default function Home() {
     <div className="min-h-screen bg-carbon">
       <Header />
       <main className="pb-20 md:pb-0">
-        <div className="section-desktop-pad">
-          <HeroDirectLux />
-        </div>
-        <div className="section-desktop-pad">
+        <HeroDirectLux />
+        <div className="section">
           <WhoWeAre />
         </div>
-        <div className="section-desktop-pad section-desktop-gap">
-          <VideoSection />
-        </div>
-        <div className="section-desktop-pad">
-          <Steps />
-        </div>
-        <div className="section-desktop-pad">
+        <VideoSection />
+        <Steps />
+        <div className="section">
           <WhyChooseUs />
         </div>
-        <div className="section-desktop-pad">
+        <div className="section">
           <Reviews />
         </div>
-        <div className="section-desktop-pad">
+        <div className="section">
           <ValuationFormSection />
         </div>
-        <div className="section-desktop-pad">
+        <div className="section">
           <FAQ />
         </div>
       </main>
