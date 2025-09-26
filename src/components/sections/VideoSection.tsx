@@ -89,14 +89,16 @@ export default function VideoSection() {
   }, []);
 
   return (
-    <section id="how-it-works" className="no-x-scroll px-safe">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 md:grid-cols-2 gap-8 items-start">
-        {/* Text block — first on mobile, second on desktop if desired */}
-        <div className="order-1 md:order-2">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">How CarVault Works</h2>
-          <p className="mt-3 text-neutral-300 mb-6">
-            Fast, fair, and stress-free across the UAE. Online valuation, quick video
-            walk-through, instant pricing, and same-day payout & paperwork.
+    <section id="how-it-works-video" className="no-x-scroll px-safe">
+      <div className="mx-auto max-w-7xl px-4 lg:grid lg:grid-cols-12 lg:gap-10">
+        {/* Left: title + description (match Who We Are styles) */}
+        <div className="lg:col-span-6">
+          <h2 className="text-4xl lg:text-6xl font-extrabold tracking-tight mb-6">
+            How <span className="text-desert-gold">CarVault</span> Works
+          </h2>
+          <p className="text-neutral-300 text-lg lg:text-xl leading-relaxed max-w-[60ch] mb-6">
+            Fast, fair, and stress-free across the UAE. Online valuation, quick video walk-through,
+            instant pricing, and same-day payout & paperwork.
           </p>
           <div className="space-y-4">
             <div className="flex items-start gap-3">
@@ -138,22 +140,18 @@ export default function VideoSection() {
           </div>
         </div>
 
-        {/* Video block — second on mobile, sticky on desktop */}
-        <div className="order-2 md:order-1 w-full">
-          <div className="relative w-full overflow-hidden rounded-2xl">
-            {/* Remove sticky on mobile; keep sticky on desktop only */}
-            <div className="md:sticky md:top-24">
-              {/* Keep your existing Vimeo embed component or iframe wrapper */}
-              <div className="relative pt-[56.25%]">
-                <iframe
-                  ref={mainRef}
-                  src={mainSrc}
-                  className="absolute inset-0 h-full w-full rounded-2xl"
-                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  title="intro"
-                />
-              </div>
+        {/* Right: responsive 16:9 video */}
+        <div className="lg:col-span-6 lg:self-start mt-8 lg:mt-0">
+          <div className="relative w-full overflow-hidden rounded-xl ring-1 ring-white/10">
+            <div className="aspect-[16/9]">
+              <iframe
+                ref={mainRef}
+                src={mainSrc}
+                className="absolute inset-0 h-full w-full"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                title="intro"
+              />
             </div>
           </div>
         </div>

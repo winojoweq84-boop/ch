@@ -46,9 +46,9 @@ function StepCard({ step, index }: { step: typeof STEPS[0], index: number }) {
       aria-label={`Step ${step.id}: ${step.title}`}
     >
       {/* Ghost Numeral */}
-      <div className="absolute -top-12 -left-12 lg:-top-20 lg:-left-20 pointer-events-none">
+      <div className="absolute -top-12 -left-12 lg:top-[-40px] lg:left-4 pointer-events-none">
         <div 
-          className="text-[6rem] sm:text-[8rem] lg:text-[10rem] font-bold leading-none select-none"
+          className="text-[6rem] sm:text-[8rem] lg:text-[220px] font-bold leading-none select-none"
           style={{ 
             WebkitTextStroke: '3px rgba(201,209,217,0.6)', 
             color: 'transparent',
@@ -131,7 +131,7 @@ export default function Steps() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="text-center mb-12 lg:mb-16"
+          className="text-center mb-10 lg:mb-20"
         >
           {/* Main Heading */}
           <motion.h2 
@@ -151,7 +151,7 @@ export default function Steps() {
         </motion.div>
 
         {/* Steps Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="relative overflow-visible grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {STEPS.map((step, index) => (
             <StepCard key={step.id} step={step} index={index} />
           ))}

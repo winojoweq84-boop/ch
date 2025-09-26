@@ -157,6 +157,19 @@ html {
 @media (min-width: 1024px) {
   :root {
     --header-h: 64px; /* Same as mobile for now, adjust if needed */
+    
+    /* Desktop section spacing tokens */
+    --section-y: 72px; /* smaller, consistent vertical rhythm */
+    --section-gap: 80px; /* for between big blocks that need extra air */
+  }
+  
+  .section-desktop-pad {
+    padding-top: var(--section-y);
+    padding-bottom: var(--section-y);
+  }
+  
+  .section-desktop-gap {
+    margin-top: var(--section-gap);
   }
 }
 

@@ -3,17 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "prebuild": "node scripts/check-conflicts.mjs",
+    "dev": "next dev",
     "build": "next build",
-    "pages:build": "cross-env GITHUB_PAGES=true NEXT_PUBLIC_REPO=car next build",
-    "pages:post": "mkdir -p out && cp -f public/404.html out/404.html 2>/dev/null || true && touch out/.nojekyll",
     "start": "next start",
-    "lint": "eslint",
-    "scrub:pii": "node scripts/scrub-pii.js",
-    "preview:html": "http-server ./static-html -p 5173 -c-1",
-    "preview:html:open": "npx open-cli http://localhost:5173/ || start http://localhost:5173/ || xdg-open http://localhost:5173/",
-    "start:html": "npm run preview:html"
+    "lint": "next lint",
+    "pages:build": "next build",
+    "pages:post": "echo 'Skipping GH Pages static export; this is SSR/Next build'"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -48,8 +43,6 @@
     "cross-env": "^7.0.3",
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
-    "http-server": "^14.1.1",
-    "open-cli": "^7.2.0",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
     "typescript": "^5"

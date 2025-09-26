@@ -261,8 +261,8 @@ export function CarValuationForm() {
               <Car className="h-8 w-8 text-taillight-red" />
             </div>
           </div>
-          <CardTitle className="text-2xl text-pearl">Get Your Instant Car Offer</CardTitle>
-          <p className="text-slate-400">Share a few details and receive a same-day, real-market offer. No branch visit.</p>
+          <CardTitle className="text-2xl text-pearl">Get Your Crypto Offer</CardTitle>
+          <p className="text-slate-400">Tell us about yourself and get an instant offer</p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
