@@ -2,12 +2,12 @@ export const BRANDS = [
   "Mercedes-Benz","BMW","Audi","Porsche","Land Rover",
   "Lexus","Tesla","Bentley","Rolls-Royce","Ferrari",
   "Lamborghini","Maserati","McLaren","Aston Martin",
-  "Jaguar","Cadillac","Infiniti","Genesis","Other"
-] as const;
+  "Jaguar","Cadillac","Infiniti","Genesis","Other",
+] as const satisfies readonly [string, ...string[]];
 
-export type Brand = (typeof BRANDS)[number];
+export type Brand = typeof BRANDS[number];
 
-export const MODELS: Record<Exclude<Brand, "Other">, string[]> = {
+export const MODELS: Record<Exclude<Brand, "Other">, readonly string[]> = {
   "Mercedes-Benz": ["S-Class","E-Class","C-Class","GLS","GLE","G-Class","Maybach","SL","CLA","GLC"],
   "BMW": ["7 Series","5 Series","3 Series","X7","X6","X5","i7","i5","iX","X3","X4"],
   "Audi": ["A8","A6","A4","Q8","Q7","RS","e-tron","A5","Q5","R8"],

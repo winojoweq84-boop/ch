@@ -56,7 +56,7 @@ const schema = z
       .optional(), // required only if payoutType=crypto
     otherToken: z.string().optional(),
     // NEW: Brand and model fields
-    brand: z.enum(BRANDS as [string, ...string[]], { message: "Select your car brand" }),
+    brand: z.enum(BRANDS, { message: "Select your car brand" }),
     model: z.string().min(1, "Please specify model"),
     otherBrand: z.string().optional(),
     otherModel: z.string().optional(),
