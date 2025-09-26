@@ -10,7 +10,10 @@
     "pages:post": "mkdir -p out && cp -f public/404.html out/404.html 2>/dev/null || true && touch out/.nojekyll",
     "start": "next start",
     "lint": "eslint",
-    "scrub:pii": "node scripts/scrub-pii.js"
+    "scrub:pii": "node scripts/scrub-pii.js",
+    "preview:html": "serve -l 5173 -s static-html",
+    "preview:html:open": "npx open-cli http://localhost:5173/index.html || start http://localhost:5173/index.html || xdg-open http://localhost:5173/index.html",
+    "start:html": "npm run preview:html"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -45,6 +48,8 @@
     "cross-env": "^7.0.3",
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
+    "open-cli": "^7.2.0",
+    "serve": "^14.2.1",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
     "typescript": "^5"
