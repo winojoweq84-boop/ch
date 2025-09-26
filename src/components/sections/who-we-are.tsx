@@ -5,14 +5,13 @@ import Image from "next/image";
 import { BlurredStagger } from "@/components/ui/blurred-stagger-text";
 import { Handshake, Building2, Smile, CheckCircle2 } from "lucide-react";
 import { getAssetPath } from "@/lib/basepath";
-import Section from "@/components/layout/Section";
 
 export default function WhoWeAre() {
   const shouldReduceMotion = useReducedMotion();
   
   // Apply basePath for GitHub Pages
   const basePath = process.env.GITHUB_PAGES === 'true' ? '/car' : '';
-  const imageSrc = `${basePath}/images/unnamed-3.jpg`;
+  const imageSrc = `${basePath}/images/342343 fvdfef.png`;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -49,8 +48,10 @@ export default function WhoWeAre() {
   };
 
   return (
-    <Section 
+    <section 
       id="who-we-are" 
+      data-testid="who-section" 
+      data-analytics="who"
       className="relative bg-carbon text-pearl"
     >
       <motion.div
@@ -58,7 +59,7 @@ export default function WhoWeAre() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
-        className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center no-x-scroll"
+        className="max-w-7xl mx-auto px-safe py-12 lg:py-16 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center no-x-scroll"
       >
         {/* LEFT: IMAGE (lg:col-span-6) */}
         <motion.figure 
@@ -159,6 +160,6 @@ export default function WhoWeAre() {
         className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(60%_60%_at_20%_10%,#000_40%,transparent_100%)] opacity-[0.06]"
         style={{ backgroundImage: `url(${getAssetPath('/images/patterns/grille-hex.svg')})` }} 
       />
-    </Section>
+    </section>
   );
 }

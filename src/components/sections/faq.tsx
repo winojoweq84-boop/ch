@@ -5,7 +5,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { BlurredStagger } from "@/components/ui/blurred-stagger-text";
 import { HelpCircle } from "lucide-react";
 import { getAssetPath } from "@/lib/basepath";
-import Section from "@/components/layout/Section";
 
 export default function FAQ() {
   const shouldReduceMotion = useReducedMotion();
@@ -76,9 +75,10 @@ export default function FAQ() {
   };
 
   return (
-    <Section 
+    <section 
       id="faq" 
-      className="relative bg-carbon text-pearl"
+      data-testid="faq-section" 
+      className="relative bg-carbon text-pearl py-12 lg:py-16"
     >
       {/* Background texture */}
       <div 
@@ -148,6 +148,6 @@ export default function FAQ() {
         </motion.div>
 
       </motion.div>
-    </Section>
+    </section>
   );
 }

@@ -3,27 +3,26 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { CarFront, ClipboardCheck, Wallet, Zap } from "lucide-react";
 import { getAssetPath } from "@/lib/basepath";
-import Section from "@/components/layout/Section";
 
 // Step data with icons and content
 const STEPS = [
   {
     id: 1,
     icon: CarFront,
-    title: "Instant Valuation",
-    description: "Share year, model, km."
+    title: "Get Instant Valuation",
+    description: "Tell us your car details and receive a fair market price in seconds."
   },
   {
     id: 2,
     icon: ClipboardCheck,
-    title: "Online Inspection",
-    description: "Walk-around video, VIN & odometer."
+    title: "Quick Video Inspection",
+    description: "Share a short video walkthrough and we'll verify your car's condition."
   },
   {
     id: 3,
     icon: Wallet,
-    title: "Payout & Pickup",
-    description: "Instant crypto or cash; we collect."
+    title: "Same-Day Payment",
+    description: "Get paid instantly in crypto or cash. We handle pickup and paperwork."
   }
 ];
 
@@ -47,10 +46,17 @@ function StepCard({ step, index }: { step: typeof STEPS[0], index: number }) {
       aria-label={`Step ${step.id}: ${step.title}`}
     >
       {/* Ghost Numeral */}
-      <div className="absolute -top-12 -left-12 lg:left-10 md:left-16 lg:top-0 pointer-events-none -z-10">
-        <span className="text-9xl font-black tracking-tight text-white/10">
+      <div className="absolute -top-12 -left-12 lg:-top-20 lg:-left-20 pointer-events-none">
+        <div 
+          className="text-[6rem] sm:text-[8rem] lg:text-[10rem] font-bold leading-none select-none"
+          style={{ 
+            WebkitTextStroke: '3px rgba(201,209,217,0.6)', 
+            color: 'transparent',
+            fontFamily: 'Saira SemiCondensed, sans-serif'
+          }}
+        >
           {String(step.id).padStart(2, '0')}
-        </span>
+        </div>
       </div>
 
       {/* Card */}
@@ -106,9 +112,11 @@ export default function Steps() {
   };
 
   return (
-    <Section 
-      id="how-steps" 
-      className="relative bg-carbon text-pearl mt-10 lg:mt-14"
+    <section 
+      id="how-it-works" 
+      data-testid="steps-section"
+      data-analytics="steps"
+      className="relative bg-carbon text-pearl py-12 lg:py-16"
     >
       {/* Background texture */}
       <div 
@@ -117,30 +125,37 @@ export default function Steps() {
         style={{ backgroundImage: `url(${getAssetPath('/images/patterns/grille-hex.svg')})` }} 
       />
 
-      <div className="no-x-scroll">
-        {/* Heading group */}
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
-            How <span className="text-[#D7B56D]">CarVault</span> Works
-          </h2>
-          <p className="mt-4 text-xl text-zinc-400">
-            Fast, fair, and stress-free across the UAE.
-          </p>
-        </div>
-
-        {/* ADD more distance from heading to cards */}
-        <div className="mt-12 lg:mt-16">
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="relative overflow-visible grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8"
+      <div className="max-w-7xl mx-auto px-safe no-x-scroll">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="text-center mb-16 lg:mb-24"
+        >
+          {/* Main Heading */}
+          <motion.h2 
+            variants={itemVariants}
+            className="font-saira text-4xl/tight md:text-5xl lg:text-6xl font-bold mb-6"
           >
-            {STEPS.map((step, index) => (
-              <StepCard key={step.id} step={step} index={index} />
-            ))}
-          </motion.div>
+            <span className="text-pearl">Sell Your Car in </span>
+            <span className="text-desert-gold">3 Simple Steps</span>
+          </motion.h2>
+
+          {/* Caption */}
+          <motion.p 
+            variants={itemVariants}
+            className="text-slate-400 text-lg lg:text-xl max-w-3xl mx-auto leading-relaxed"
+          >
+            Get the best price for your car with our streamlined process. From instant valuation to same-day payout, we make selling your car effortless and profitable.
+          </motion.p>
+        </motion.div>
+
+        {/* Steps Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+          {STEPS.map((step, index) => (
+            <StepCard key={step.id} step={step} index={index} />
+          ))}
         </div>
 
         {/* CTA Button */}
@@ -162,6 +177,6 @@ export default function Steps() {
           </a>
         </motion.div>
       </div>
-    </Section>
+    </section>
   );
 }

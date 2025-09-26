@@ -7,12 +7,10 @@ import { z } from "zod";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { RateLockTimer } from "@/components/ui/rate-lock-timer";
-import { Car, Zap, Clock, CheckCircle } from "lucide-react";
-import { formatPrice } from "@/lib/utils";
+import { Car, Zap, Clock } from "lucide-react";
 import { BRANDS, MODELS } from "@/data/carOptions";
 import { sendLeadToWebhook } from "@/lib/lead";
+import { useRouter } from "next/navigation";
 
 const EMIRATES = [
   "Dubai",
@@ -105,8 +103,7 @@ type FormValues = z.infer<typeof schema>;
 
 export function CarValuationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showResult, setShowResult] = useState(false);
-  const [estimatedValue, setEstimatedValue] = useState(0);
+  const router = useRouter();
 
   const {
     register,
@@ -145,108 +142,47 @@ export function CarValuationForm() {
     try {
       console.log("Form data:", data);
       
-      // Send to webhook
-      await sendLeadToWebhook({
-        name: data.name,
-        city: data.city === "Other" ? (data.otherCity || data.city) : data.city,
-        phone: data.phone,
-        email: data.email,
-        payoutMethod: data.payoutType,
-        token: data.payoutType === "crypto" ? data.token : undefined,
-        otherToken: data.payoutType === "crypto" && data.token === "Other" ? data.otherToken : undefined,
-        brand: data.brand === "Other" ? (data.otherBrand || data.brand) : data.brand,
-        model: (data.model === "Other" || data.brand === "Other") ? (data.otherModel || data.model) : data.model,
-        source: "hero_form_compact",
-      });
+      // Try to send to webhook (but don't fail the form if it fails)
+      try {
+        await sendLeadToWebhook({
+          name: data.name,
+          city: data.city === "Other" ? (data.otherCity || data.city) : data.city,
+          phone: data.phone,
+          email: data.email,
+          payoutMethod: data.payoutType,
+          token: data.payoutType === "crypto" ? data.token : undefined,
+          otherToken: data.payoutType === "crypto" && data.token === "Other" ? data.otherToken : undefined,
+          brand: data.brand === "Other" ? (data.otherBrand || data.brand) : data.brand,
+          model: (data.model === "Other" || data.brand === "Other") ? (data.otherModel || data.model) : data.model,
+          source: "hero_form_compact",
+        });
+        console.log("Lead sent successfully");
+      } catch (webhookError) {
+        console.warn("Webhook failed, but continuing with form submission:", webhookError);
+        // Log the lead data for manual processing if needed
+        console.log("Lead data for manual processing:", {
+          name: data.name,
+          phone: data.phone,
+          email: data.email,
+          city: data.city === "Other" ? (data.otherCity || data.city) : data.city,
+          brand: data.brand === "Other" ? (data.otherBrand || data.brand) : data.brand,
+          model: (data.model === "Other" || data.brand === "Other") ? (data.otherModel || data.model) : data.model,
+          payoutMethod: data.payoutType,
+          token: data.payoutType === "crypto" ? data.token : undefined,
+        });
+      }
       
-      // Mock valuation - for crypto payout, show higher value
-      const baseValue = payoutType === "crypto" ? 45000 : 38000;
-      setEstimatedValue(baseValue);
-      setShowResult(true);
+      // Redirect to thank you page
+      router.push('/thank-you');
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.error("Unexpected error submitting form:", error);
+      // Even if there's an unexpected error, redirect to thank you page
+      router.push('/thank-you');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (showResult) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <Card className="max-w-2xl mx-auto bg-asphalt border-trim-silver/20">
-          <CardHeader className="text-center">
-            <div className="flex justify-center mb-4">
-              <div className="p-4 rounded-full bg-desert-gold/10 border border-desert-gold/30">
-                <Zap className="h-8 w-8 text-desert-gold" />
-              </div>
-            </div>
-            <CardTitle className="text-2xl text-pearl">Your Crypto Offer</CardTitle>
-            <p className="text-slate-400">Based on your preferences</p>
-          </CardHeader>
-          <CardContent className="text-center space-y-6">
-            <div>
-              <p className="font-saira text-4xl font-bold text-desert-gold tabular-nums mb-2">
-                {formatPrice(estimatedValue)}
-              </p>
-              <Badge variant="default" className="mb-4 bg-desert-gold text-carbon">
-                <Zap className="h-3 w-3 mr-1" />
-                {payoutType === "crypto" ? "+18% Crypto Premium" : "Market Rate"}
-              </Badge>
-            </div>
-
-            <div className="space-y-3 text-sm">
-              <div className="flex items-center justify-between">
-                <span className="text-slate-400">Base Value:</span>
-                <span className="text-pearl tabular-nums">
-                  {formatPrice(payoutType === "crypto" ? Math.round(estimatedValue / 1.18) : estimatedValue)}
-                </span>
-              </div>
-              {payoutType === "crypto" && (
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-400">Crypto Premium:</span>
-                  <span className="text-desert-gold tabular-nums">
-                    +{formatPrice(Math.round(estimatedValue * 0.18))}
-                  </span>
-                </div>
-              )}
-            </div>
-
-            <div className="flex justify-center">
-              <RateLockTimer duration={15} />
-            </div>
-
-            <div className="space-y-3">
-              <Button 
-                size="lg" 
-                className="w-full animate-taillight-pulse"
-                data-analytics="valuation-result-cta"
-                data-cta="accept-offer"
-              >
-                <CheckCircle className="h-4 w-4 mr-2" />
-                Accept This Offer
-              </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="w-full"
-                onClick={() => setShowResult(false)}
-              >
-                Get New Offer
-              </Button>
-            </div>
-
-            <p className="text-xs text-slate-400">
-              Final price subject to inspection. KYC required. Network fees apply.
-            </p>
-          </CardContent>
-        </Card>
-      </motion.div>
-    );
-  }
 
   return (
     <motion.div
@@ -261,8 +197,8 @@ export function CarValuationForm() {
               <Car className="h-8 w-8 text-taillight-red" />
             </div>
           </div>
-          <CardTitle className="text-2xl text-pearl">Get Your Crypto Offer</CardTitle>
-          <p className="text-slate-400">Tell us about yourself and get an instant offer</p>
+          <CardTitle className="text-2xl text-pearl">Get Your Instant Car Offer</CardTitle>
+          <p className="text-slate-400">Share a few details and receive a same-day, real-market offer. No branch visit.</p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

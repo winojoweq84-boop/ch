@@ -13,15 +13,29 @@ export async function sendLeadToTelegram(data: {
   brand: string; model: string;
 }) {
   const lines = [
-    `*New CarVault Lead*`,
-    `Name: ${esc(data.name)}`,
-    `Phone: ${esc(data.phone)}`,
-    `Email: ${esc(data.email)}`,
-    `City/Emirate: ${esc(data.city)}`,
-    `Brand: ${esc(data.brand)}`,
-    `Model: ${esc(data.model)}`,
-    `Payout: ${esc(data.payoutMethod)}${data.payoutMethod === "Crypto" && data.cryptoToken ? ` (${esc(data.cryptoToken)})` : ""}`,
-    `Source: Website`
+    `🚗 *New Car Valuation Lead*`,
+    ``,
+    `👤 *Name:* ${esc(data.name)}`,
+    `📍 *Location:* ${esc(data.city)}`,
+    `📞 *Phone:* ${esc(data.phone)}`,
+    `📧 *Email:* ${esc(data.email)}`,
+    ``,
+    `🚙 *Car Details:*`,
+    `• *Brand:* ${esc(data.brand)}`,
+    `• *Model:* ${esc(data.model)}`,
+    ``,
+    `💰 *Payout Method:* ${esc(data.payoutMethod)}`,
+    ``,
+    `🔗 *Source:* Website`,
+    `⏰ *Time:* ${new Date().toLocaleString('en-US', { 
+      timeZone: 'Asia/Dubai',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    })}`
   ].join("\n");
 
   const res = await fetch(API, {

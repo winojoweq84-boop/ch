@@ -5,7 +5,6 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Zap, ArrowRight, CheckCircle, FileText, Users } from "lucide-react";
-import Section from "@/components/layout/Section";
 
 interface HeroDirectLuxProps {
   carImage?: string;
@@ -58,9 +57,10 @@ export default function HeroDirectLux({
   const cryptoCoins = ["USDT", "USDC", "BTC", "ETH", "BNB", "SOL"];
 
   return (
-    <Section 
+    <section 
       id="hero" 
-      className="relative overflow-hidden bg-carbon text-pearl no-x-scroll"
+      data-testid="hero" 
+      className="relative overflow-hidden bg-carbon text-pearl no-x-scroll px-safe"
     >
 
       <motion.div
@@ -68,7 +68,7 @@ export default function HeroDirectLux({
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
-        className="max-w-none mx-auto px-2 sm:px-4 pt-8 pb-8 lg:pt-12 lg:pb-12 lg:max-w-7xl lg:px-8"
+        className="max-w-none mx-auto px-2 sm:px-4 pt-8 pb-8 lg:pt-12 lg:pb-16 lg:max-w-7xl lg:px-8"
       >
         {/* Mobile: Crypto Badge at Top */}
         <motion.div 
@@ -227,6 +227,6 @@ export default function HeroDirectLux({
           </motion.div>
         </div>
       </motion.div>
-    </Section>
+    </section>
   );
 }
