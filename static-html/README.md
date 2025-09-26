@@ -47,7 +47,7 @@ This static site can be deployed to any static hosting service:
 
 1. `npm install`
 2. `npm run preview:html`
-3. Open http://localhost:5173/index.html
+3. Open http://localhost:5173/
 
 ## Testing
 
