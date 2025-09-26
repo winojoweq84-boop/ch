@@ -3,6 +3,171 @@
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Saira+Semi+Condensed:wght@400;600;700&family=Tajawal:wght@400;500;700&display=swap');
 
+/* Global CSS Hardening - Prevent horizontal scroll; mobile first */
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Fluid media */
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Responsive container */
+.container {
+  width: min(1120px, 92vw);
+  margin-inline: auto;
+  padding-inline: clamp(16px, 4vw, 28px);
+}
+
+/* Typographic scale that behaves nicely on iPhone 16 widths */
+h2.section-title {
+  font-size: clamp(28px, 4.2vw, 46px);
+  line-height: 1.15;
+  letter-spacing: 0.2px;
+}
+p.section-lead {
+  font-size: clamp(15px, 2.2vw, 18px);
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+/* Badge chip */
+.badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(215,181,109,0.14);
+  color: #D7B56D;
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+/* Grid: text left, image right on desktop; stacked on mobile */
+.why-grid {
+  display: grid;
+  gap: clamp(18px, 4vw, 40px);
+  align-items: center;
+}
+
+.why-copy { order: 1; }
+.why-media { order: 2; }
+
+.why-media img {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+}
+
+/* Desktop 2-col */
+@media (min-width: 960px) {
+  .why-grid {
+    grid-template-columns: 1.05fr 1fr; /* text a tad wider than image */
+  }
+}
+
+/* Mobile stacking tuned for iPhone 16/16 Pro widths */
+@media (max-width: 959.98px) {
+  .why-grid {
+    grid-template-columns: 1fr;
+  }
+  .why-copy { order: 1; }
+  .why-media { order: 2; }
+}
+
+/* Sticky mini-video styles */
+.sticky-video {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: clamp(260px, 26vw, 360px);
+  aspect-ratio: 16/9;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  background: #000;
+  z-index: 9999;
+  display: none; /* JS will toggle this on desktop */
+}
+
+.sticky-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* no black bars */
+}
+
+.sticky-video .sv-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  font-size: 18px;
+  line-height: 28px;
+  cursor: pointer;
+}
+
+.sv-iframe-wrap, .sv-iframe-wrap iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Hide sticky video on tablets/phones by default */
+@media (max-width: 1024px) {
+  .sticky-video { display: none !important; }
+}
+
+/* Force header text before video on mobile */
+@media (max-width: 959.98px) {
+  .video-section {
+    display: grid;
+    gap: 16px;
+  }
+  .video-section .video-copy { order: 1; }
+  .video-section .video-frame { order: 2; }
+}
+
+/* iPhone 16/16 Pro specific optimizations */
+@media (max-width: 430px) {
+  .container {
+    padding-inline: 16px;
+  }
+  
+  /* Ensure all images are responsive */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  
+  /* Prevent any element from causing horizontal scroll */
+  * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Optimize typography for small screens */
+  h2.section-title {
+    font-size: clamp(24px, 6vw, 32px);
+  }
+  
+  p.section-lead {
+    font-size: clamp(14px, 4vw, 16px);
+  }
+}
+
 /* CSS Custom Properties */
 :root {
   /* Custom automotive color palette */

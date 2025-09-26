@@ -49,63 +49,28 @@
 
     // Sticky Video Functionality (Desktop Only)
     function initStickyVideo() {
-        const videoSection = document.querySelector('.video-section');
-        const stickyVideo = document.getElementById('sticky-video');
-        const closeBtn = document.getElementById('sticky-video-close');
+        const wrap = document.getElementById('stickyVideo');
+        const closeBtn = wrap?.querySelector('.sv-close');
 
-        if (!videoSection || !stickyVideo || !closeBtn) return;
+        if (!wrap) return;
 
-        let isDesktop = window.innerWidth >= 1024;
-        let isDismissed = false;
-        let observer;
+        const isDesktop = window.matchMedia('(min-width: 1025px)').matches;
 
-        // Check if we're on desktop
-        function checkDesktop() {
-            isDesktop = window.innerWidth >= 1024;
-            if (!isDesktop) {
-                hideStickyVideo();
+        // Show when user scrolls past 35% of page on desktop
+        function maybeShow() {
+            if (!isDesktop) return;
+            const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+            if (scrolled > 0.35 && wrap.style.display !== 'block') {
+                wrap.style.display = 'block';
             }
         }
 
-        // Show sticky video
-        function showStickyVideo() {
-            if (!isDesktop || isDismissed) return;
-            stickyVideo.classList.add('show');
-        }
+        window.addEventListener('scroll', maybeShow, { passive: true });
+        maybeShow();
 
-        // Hide sticky video
-        function hideStickyVideo() {
-            stickyVideo.classList.remove('show');
-        }
-
-        // Close button handler
-        closeBtn.addEventListener('click', function() {
-            isDismissed = true;
-            hideStickyVideo();
+        closeBtn?.addEventListener('click', () => {
+            wrap.remove();
         });
-
-        // Intersection Observer for video section
-        if ('IntersectionObserver' in window) {
-            observer = new IntersectionObserver(function(entries) {
-                entries.forEach(function(entry) {
-                    if (!entry.isIntersecting && isDesktop && !isDismissed) {
-                        showStickyVideo();
-                    } else {
-                        hideStickyVideo();
-                    }
-                });
-            }, { threshold: 0.3 });
-
-            observer.observe(videoSection);
-        }
-
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            checkDesktop();
-        });
-
-        // Initialize
-        checkDesktop();
     }
 
     // Form Validation and Interactions
