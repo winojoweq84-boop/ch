@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { CarFront, ClipboardCheck, Wallet, Zap } from "lucide-react";
 import { getAssetPath } from "@/lib/basepath";
+import Section from "@/components/layout/Section";
 
 // Step data with icons and content
 const STEPS = [
@@ -46,17 +47,10 @@ function StepCard({ step, index }: { step: typeof STEPS[0], index: number }) {
       aria-label={`Step ${step.id}: ${step.title}`}
     >
       {/* Ghost Numeral */}
-      <div className="absolute -top-12 -left-12 lg:top-[-40px] lg:left-2 pointer-events-none">
-        <div 
-          className="text-[6rem] sm:text-[8rem] lg:text-[220px] font-bold leading-none select-none"
-          style={{ 
-            WebkitTextStroke: '3px rgba(201,209,217,0.6)', 
-            color: 'transparent',
-            fontFamily: 'Saira SemiCondensed, sans-serif'
-          }}
-        >
+      <div className="absolute -top-12 -left-12 lg:left-10 md:left-16 lg:top-0 pointer-events-none -z-10">
+        <span className="text-9xl font-black tracking-tight text-white/10">
           {String(step.id).padStart(2, '0')}
-        </div>
+        </span>
       </div>
 
       {/* Card */}
@@ -112,11 +106,9 @@ export default function Steps() {
   };
 
   return (
-    <section 
+    <Section 
       id="how-steps" 
-      data-testid="steps-section"
-      data-analytics="steps"
-      className="section section--how-steps relative bg-carbon text-pearl"
+      className="relative bg-carbon text-pearl mt-10 lg:mt-14"
     >
       {/* Background texture */}
       <div 
@@ -125,37 +117,30 @@ export default function Steps() {
         style={{ backgroundImage: `url(${getAssetPath('/images/patterns/grille-hex.svg')})` }} 
       />
 
-      <div className="max-w-7xl mx-auto px-safe no-x-scroll">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="how-steps__header text-center"
-        >
-          {/* Main Heading */}
-          <motion.h2 
-            variants={itemVariants}
-            className="font-saira text-4xl/tight md:text-5xl lg:text-6xl font-bold mb-4 text-balance"
-          >
-            <span className="text-pearl">From Quote to Pickup — in 3 Quick Steps</span>
-          </motion.h2>
+      <div className="no-x-scroll">
+        {/* Heading group */}
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
+            How <span className="text-[#D7B56D]">CarVault</span> Works
+          </h2>
+          <p className="mt-4 text-xl text-zinc-400">
+            Fast, fair, and stress-free across the UAE.
+          </p>
+        </div>
 
-          {/* Caption */}
-          <motion.p 
-            variants={itemVariants}
-            className="text-slate-400 text-lg lg:text-xl max-w-2xl mx-auto muted"
+        {/* ADD more distance from heading to cards */}
+        <div className="mt-12 lg:mt-16">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            className="relative overflow-visible grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8"
           >
-            No branches, no waiting. Share details, send a short video, and we&apos;ll handle
-            inspection, paperwork, and same-day payout.
-          </motion.p>
-        </motion.div>
-
-        {/* Steps Grid */}
-        <div className="relative overflow-visible grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-          {STEPS.map((step, index) => (
-            <StepCard key={step.id} step={step} index={index} />
-          ))}
+            {STEPS.map((step, index) => (
+              <StepCard key={step.id} step={step} index={index} />
+            ))}
+          </motion.div>
         </div>
 
         {/* CTA Button */}
@@ -177,6 +162,6 @@ export default function Steps() {
           </a>
         </motion.div>
       </div>
-    </section>
+    </Section>
   );
 }

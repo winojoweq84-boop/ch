@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Zap, ArrowRight, CheckCircle, FileText, Users } from "lucide-react";
+import Section from "@/components/layout/Section";
 
 interface HeroDirectLuxProps {
   carImage?: string;
@@ -57,10 +58,9 @@ export default function HeroDirectLux({
   const cryptoCoins = ["USDT", "USDC", "BTC", "ETH", "BNB", "SOL"];
 
   return (
-    <section 
+    <Section 
       id="hero" 
-      data-testid="hero" 
-      className="section section--hero relative overflow-hidden bg-carbon text-pearl no-x-scroll px-safe"
+      className="relative overflow-hidden bg-carbon text-pearl no-x-scroll"
     >
 
       <motion.div
@@ -227,6 +227,6 @@ export default function HeroDirectLux({
           </motion.div>
         </div>
       </motion.div>
-    </section>
+    </Section>
   );
 }

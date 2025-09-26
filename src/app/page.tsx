@@ -16,23 +16,13 @@ export default function Home() {
       <Header />
       <main className="pb-20 md:pb-0">
         <HeroDirectLux />
-        <div className="section">
-          <WhoWeAre />
-        </div>
+        <WhoWeAre />
         <VideoSection />
         <Steps />
-        <div className="section">
-          <WhyChooseUs />
-        </div>
-        <div className="section">
-          <Reviews />
-        </div>
-        <div className="section">
-          <ValuationFormSection />
-        </div>
-        <div className="section">
-          <FAQ />
-        </div>
+        <WhyChooseUs />
+        <Reviews />
+        <ValuationFormSection />
+        <FAQ />
       </main>
       <Footer />
       <MobileStickyCTA />

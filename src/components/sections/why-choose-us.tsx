@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Clock } from "lucide-react";
 import Image from "next/image";
 import { getAssetPath } from "@/lib/basepath";
+import Section from "@/components/layout/Section";
 
 // Feature data
 const FEATURES = [
@@ -151,10 +152,8 @@ export default function WhyChooseUs() {
   };
 
   return (
-    <section 
+    <Section 
       id="why-choose-us" 
-      data-testid="why-choose-us-section"
-      data-analytics="why-choose-us"
       className="relative bg-carbon text-pearl"
     >
       {/* Background texture */}
@@ -206,6 +205,6 @@ export default function WhyChooseUs() {
           ))}
         </div>
       </motion.div>
-    </section>
+    </Section>
   );
 }
