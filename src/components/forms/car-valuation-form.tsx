@@ -12,6 +12,7 @@ import { RateLockTimer } from "@/components/ui/rate-lock-timer";
 import { Car, Zap, Clock, CheckCircle } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 import { BRANDS, MODELS } from "@/data/carOptions";
+import { sendLeadToWebhook } from "@/lib/lead";
 
 const EMIRATES = [
   "Dubai",
@@ -142,36 +143,21 @@ export function CarValuationForm() {
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
     try {
-      // Prepare payload with normalized city, brand, and model
-      const payload = {
+      console.log("Form data:", data);
+      
+      // Send to webhook
+      await sendLeadToWebhook({
         name: data.name,
-        city: data.city === "Other" ? data.otherCity : data.city, // normalized
+        city: data.city === "Other" ? (data.otherCity || data.city) : data.city,
         phone: data.phone,
         email: data.email,
-        brand: data.brand === "Other" ? data.otherBrand : data.brand, // normalized
-        model: (data.model === "Other" || data.brand === "Other") ? (data.otherModel || data.model) : data.model, // normalized
-        payout: {
-          type: data.payoutType,
-          token: data.payoutType === "crypto" ? data.token : undefined,
-          otherToken: data.payoutType === "crypto" && data.token === "Other" ? data.otherToken : undefined,
-        },
+        payoutMethod: data.payoutType,
+        token: data.payoutType === "crypto" ? data.token : undefined,
+        otherToken: data.payoutType === "crypto" && data.token === "Other" ? data.otherToken : undefined,
+        brand: data.brand === "Other" ? (data.otherBrand || data.brand) : data.brand,
+        model: (data.model === "Other" || data.brand === "Other") ? (data.otherModel || data.model) : data.model,
         source: "hero_form_compact",
-      };
-
-      console.log("Form payload:", payload);
-      
-      // Call API
-      const response = await fetch('/api/submit-valuation', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to submit form');
-      }
       
       // Mock valuation - for crypto payout, show higher value
       const baseValue = payoutType === "crypto" ? 45000 : 38000;
