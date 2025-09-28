@@ -62,26 +62,26 @@ export async function sendLeadToWebhook(payload: LeadPayload) {
     const cryptoToken = payload.token ? ` (${payload.token})` : '';
     
     // Escape special characters for MarkdownV2
-    function escapeMarkdown(text) {
+    function escapeMarkdown(text: string): string {
       return text.replace(/([_*\[\]()~`>#+\-=|{}.!\\])/g, "\\$1");
     }
 
     const telegramMessage = [
       `🚗 *New Car Valuation Lead*`,
       ``,
-      `👤 *Name:* ${escapeMarkdown(payload.name)}`,
-      `📍 *Location:* ${escapeMarkdown(payload.city)}`,
-      `📞 *Phone:* ${escapeMarkdown(payload.phone)}`,
-      `📧 *Email:* ${escapeMarkdown(payload.email)}`,
+      `👤 *Name:* ${escapeMarkdown(String(payload.name))}`,
+      `📍 *Location:* ${escapeMarkdown(String(payload.city))}`,
+      `📞 *Phone:* ${escapeMarkdown(String(payload.phone))}`,
+      `📧 *Email:* ${escapeMarkdown(String(payload.email))}`,
       ``,
       `🚙 *Car Details:*`,
-      `• *Brand:* ${escapeMarkdown(payload.brand || 'Not specified')}`,
-      `• *Model:* ${escapeMarkdown(payload.model || 'Not specified')}`,
+      `• *Brand:* ${escapeMarkdown(String(payload.brand || 'Not specified'))}`,
+      `• *Model:* ${escapeMarkdown(String(payload.model || 'Not specified'))}`,
       ``,
-      `💰 *Payout Method:* ${escapeMarkdown(payoutDisplay + cryptoToken)}`,
+      `💰 *Payout Method:* ${escapeMarkdown(String(payoutDisplay + cryptoToken))}`,
       ``,
       `🔗 *Source:* Website \\(GitHub Pages\\)`,
-      `⏰ *Time:* ${escapeMarkdown(new Date().toLocaleString('en-US', { 
+      `⏰ *Time:* ${escapeMarkdown(String(new Date().toLocaleString('en-US', { 
         timeZone: 'Asia/Dubai',
         year: 'numeric',
         month: 'long',
@@ -89,7 +89,7 @@ export async function sendLeadToWebhook(payload: LeadPayload) {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit'
-      }))}`
+      })))}`
     ].join("\n");
 
     const telegramRes = await fetch(telegramApi, {
