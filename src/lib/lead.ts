@@ -13,6 +13,17 @@ export type LeadPayload = {
   source?: string;
 };
 
+// helper: convert unknown to Error without changing behavior
+function normalizeError(e: unknown): Error {
+  if (e instanceof Error) return e;
+  if (typeof e === 'string') return new Error(e);
+  try {
+    return new Error(JSON.stringify(e));
+  } catch {
+    return new Error(String(e));
+  }
+}
+
 export async function sendLeadToWebhook(payload: LeadPayload) {
   // For static GitHub Pages deployment, we need to use a different approach
   // Since API routes don't work on static sites, we'll send directly to Supabase and Telegram
@@ -112,13 +123,15 @@ export async function sendLeadToWebhook(payload: LeadPayload) {
 
     console.log('✅ Lead processed successfully (Supabase + Telegram)');
     
-  } catch (error) {
-    console.error('❌ Lead processing failed:', error);
+  } catch (error: unknown) {
+    const err = normalizeError(error);
+    
+    console.error('❌ Lead processing failed:', err);
     console.error('Error details:', {
-      message: error.message,
-      stack: error.stack,
+      message: err.message,
+      stack: err.stack,
       payload: payload
     });
-    throw error;
+    throw err;
   }
 }
