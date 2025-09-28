@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     const payoutDisplay = payoutMethod === 'crypto' ? 'Crypto' : 'Cash';
     const cryptoToken = body.token ? ` (${body.token})` : '';
     
-    // Try to send to Telegram (but don't fail if bot is not configured)
+    // Try to send to Telegram
     try {
       await sendLeadToTelegram({
         name,
@@ -30,13 +30,14 @@ export async function POST(request: NextRequest) {
         brand,
         model,
       });
-      console.log('Lead sent to Telegram successfully');
+      console.log('✅ Lead sent to Telegram successfully');
     } catch (telegramError) {
-      console.warn('Telegram bot not configured or failed:', telegramError);
+      console.error('❌ Telegram bot failed:', telegramError);
       // Log the lead data for manual processing
-      console.log('Lead data for manual processing:', {
+      console.log('📋 Lead data for manual processing:', {
         name, phone, email, city, brand, model, payoutMethod: payoutDisplay + cryptoToken
       });
+      // Don't fail the request if Telegram fails, but log the error
     }
 
     return NextResponse.json({ success: true });
