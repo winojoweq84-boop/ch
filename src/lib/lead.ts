@@ -17,6 +17,8 @@ export async function sendLeadToWebhook(payload: LeadPayload) {
   // For static GitHub Pages deployment, we need to use a different approach
   // Since API routes don't work on static sites, we'll send directly to Supabase and Telegram
   
+  console.log('🚀 sendLeadToWebhook called with payload:', payload);
+  
   try {
     // Send to Supabase directly
     const supabaseUrl = 'https://scnrhzqqhbtvobbxvbnx.supabase.co';
@@ -111,7 +113,12 @@ export async function sendLeadToWebhook(payload: LeadPayload) {
     console.log('✅ Lead processed successfully (Supabase + Telegram)');
     
   } catch (error) {
-    console.error('Lead processing failed:', error);
+    console.error('❌ Lead processing failed:', error);
+    console.error('Error details:', {
+      message: error.message,
+      stack: error.stack,
+      payload: payload
+    });
     throw error;
   }
 }
