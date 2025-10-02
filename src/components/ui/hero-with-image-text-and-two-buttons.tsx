@@ -10,9 +10,8 @@ import Image from "next/image";
 function Hero() {
   const shouldReduceMotion = useReducedMotion();
   
-  // Apply basePath for GitHub Pages
-  const basePath = process.env.GITHUB_PAGES === 'true' ? '/car' : '';
-  const imageSrc = `${basePath}/images/nano-banana-2025-09-22T13-30-18-1.png`;
+  // Use the proper basePath from environment variable
+  const imageSrc = "/images/nano-banana-2025-09-22T13-30-18-1.png";
 
   const containerVariants = {
     hidden: { opacity: 0 },

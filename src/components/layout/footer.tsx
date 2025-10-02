@@ -4,9 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export default function Footer() {
-  // Apply basePath for GitHub Pages
-  const basePath = process.env.GITHUB_PAGES === 'true' ? '/car' : '';
-  const logoSrc = `${basePath}/images/3893893399.png`;
+  // Next.js Image component automatically handles basePath
+  const logoSrc = "/images/3893893399.png";
 
   return (
     <footer className="border-t border-white/10 bg-[#0A0A0B] no-x-scroll px-safe">

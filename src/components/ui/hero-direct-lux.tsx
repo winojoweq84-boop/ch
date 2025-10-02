@@ -15,9 +15,8 @@ export default function HeroDirectLux({
   carImage = "/images/783993.png",
   carImageAlt = "Luxury car showcase for sale in UAE with instant crypto payout"
 }: HeroDirectLuxProps) {
-  // Apply basePath for GitHub Pages
-  const basePath = process.env.GITHUB_PAGES === 'true' ? '/car' : '';
-  const imageSrc = `${basePath}${carImage}`;
+  // Next.js Image component automatically handles basePath
+  const imageSrc = carImage;
   const shouldReduceMotion = useReducedMotion();
 
   const containerVariants = {

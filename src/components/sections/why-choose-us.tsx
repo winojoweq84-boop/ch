@@ -23,9 +23,8 @@ function FeatureCard({ feature, index }: { feature: typeof FEATURES[0], index: n
   const shouldReduceMotion = useReducedMotion();
   const IconComponent = feature.icon;
   
-  // Apply basePath for GitHub Pages
-  const basePath = process.env.GITHUB_PAGES === 'true' ? '/car' : '';
-  const imageSrc = `${basePath}${feature.image}`;
+  // Next.js Image component automatically handles basePath
+  const imageSrc = feature.image;
 
   const containerVariants = {
     hidden: { opacity: 0 },

@@ -9,9 +9,8 @@ import { getAssetPath } from "@/lib/basepath";
 export default function WhoWeAre() {
   const shouldReduceMotion = useReducedMotion();
   
-  // Apply basePath for GitHub Pages
-  const basePath = process.env.GITHUB_PAGES === 'true' ? '/car' : '';
-  const imageSrc = `${basePath}/images/342343 fvdfef.png`;
+  // Next.js Image component automatically handles basePath
+  const imageSrc = "/images/342343 fvdfef.png";
 
   const containerVariants = {
     hidden: { opacity: 0 },
