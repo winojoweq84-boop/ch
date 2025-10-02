@@ -1,3 +1,5 @@
+import { sendFacebookConversion, createFacebookConversionFromLead } from './facebook-conversions';
+
 export type LeadPayload = {
   name: string;
   city: string;
@@ -10,7 +12,12 @@ export type LeadPayload = {
   model?: string;
   otherBrand?: string;
   otherModel?: string;
+  otherCity?: string;
   source?: string;
+  // Optional tracking data
+  userAgent?: string;
+  ipAddress?: string;
+  sessionId?: string;
 };
 
 // helper: convert unknown to Error without changing behavior
@@ -26,7 +33,7 @@ function normalizeError(e: unknown): Error {
 
 export async function sendLeadToWebhook(payload: LeadPayload) {
   // For static GitHub Pages deployment, we need to use a different approach
-  // Since API routes don't work on static sites, we'll send directly to Supabase and Telegram
+  // Since API routes don't work on static sites, we'll send directly to Supabase, Telegram, and Stape.io
   
   console.log('🚀 sendLeadToWebhook called with payload:', payload);
   
@@ -122,6 +129,42 @@ export async function sendLeadToWebhook(payload: LeadPayload) {
     }
 
     console.log('✅ Lead processed successfully (Supabase + Telegram)');
+    
+    // Step 3: Send to Facebook Conversions API
+    try {
+      const facebookConversionData = createFacebookConversionFromLead({
+        name: payload.name,
+        email: payload.email,
+        phone: payload.phone,
+        city: payload.city,
+        brand: payload.brand || '',
+        model: payload.model || '',
+        payoutMethod: payload.payoutMethod,
+        token: payload.token,
+        source: payload.source || 'hero_form_compact',
+      }, {
+        leadId: `lead_${Date.now()}`,
+        userAgent: payload.userAgent,
+        ipAddress: payload.ipAddress,
+        sessionId: payload.sessionId,
+        customProperties: {
+          other_brand: payload.otherBrand,
+          other_model: payload.otherModel,
+          other_token: payload.otherToken,
+          other_city: payload.city === 'Other' ? payload.otherCity : undefined,
+        },
+      });
+      
+      const facebookSuccess = await sendFacebookConversion(facebookConversionData);
+      if (facebookSuccess) {
+        console.log('✅ Facebook Conversions API tracking sent successfully');
+      } else {
+        console.warn('⚠️ Facebook Conversions API tracking failed, but lead was still processed');
+      }
+    } catch (facebookError) {
+      console.warn('⚠️ Facebook Conversions API tracking failed:', facebookError);
+      // Don't fail the entire lead processing if Facebook tracking fails
+    }
     
   } catch (error: unknown) {
     const err = normalizeError(error);

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendLeadToTelegram } from '@/lib/telegram';
 import { supabase, Lead } from '@/lib/supabase';
+import { sendFacebookConversion, createFacebookConversionFromLead } from '@/lib/facebook-conversions';
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,6 +9,13 @@ export async function POST(request: NextRequest) {
     
     // Validate required fields
     const { name, phone, email, city, payoutMethod, brand, model } = body;
+    
+    // Extract tracking data from request
+    const userAgent = request.headers.get('user-agent') || undefined;
+    const ipAddress = request.headers.get('x-forwarded-for') || 
+                     request.headers.get('x-real-ip') || 
+                     '127.0.0.1';
+    const sessionId = body.sessionId || undefined;
     
     if (!name || !phone || !email || !city || !payoutMethod || !brand || !model) {
       return NextResponse.json(
@@ -66,7 +74,43 @@ export async function POST(request: NextRequest) {
       
       console.log('✅ Lead sent to Telegram successfully');
       
-      // Step 3: Update Supabase record to mark Telegram as sent
+      // Step 3: Send to Facebook Conversions API
+      try {
+        const facebookConversionData = createFacebookConversionFromLead({
+          name,
+          email,
+          phone,
+          city,
+          brand,
+          model,
+          payoutMethod: payoutMethod as 'crypto' | 'cash',
+          token: body.token,
+          source: body.source || 'api_form',
+        }, {
+          leadId,
+          userAgent,
+          ipAddress,
+          sessionId,
+          customProperties: {
+            other_brand: body.otherBrand,
+            other_model: body.otherModel,
+            other_token: body.otherToken,
+            other_city: body.otherCity,
+          },
+        });
+        
+        const facebookSuccess = await sendFacebookConversion(facebookConversionData);
+        if (facebookSuccess) {
+          console.log('✅ Facebook Conversions API tracking sent successfully');
+        } else {
+          console.warn('⚠️ Facebook Conversions API tracking failed, but lead was still processed');
+        }
+      } catch (facebookError) {
+        console.warn('⚠️ Facebook Conversions API tracking failed:', facebookError);
+        // Don't fail the entire lead processing if Facebook tracking fails
+      }
+      
+      // Step 4: Update Supabase record to mark Telegram as sent
       if (leadId) {
         try {
           await supabase
