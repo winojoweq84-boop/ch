@@ -32,7 +32,7 @@ export interface StapeConversionData {
   session_id?: string;
   
   // Custom properties
-  custom_properties?: Record<string, any>;
+  custom_properties?: Record<string, unknown>;
 }
 
 export interface StapeConfig {
@@ -73,21 +73,9 @@ export async function sendStapeConversion(data: StapeConversionData): Promise<bo
     return false;
   }
   
-  try {
-    console.log('🚀 Sending Stape.io S2S conversion:', {
-      event_type: data.event_type,
-      lead_id: data.lead_id,
-      name: data.name,
-      email: data.email,
-      city: data.city,
-      brand: data.brand,
-      model: data.model,
-      payout_method: data.payout_method,
-    });
-    
-    // Prepare the payload for GTM server-side container
-    // GTM expects data in a specific format with client_name and events
-    const payload = {
+  // Prepare the payload for GTM server-side container
+  // GTM expects data in a specific format with client_name and events
+  const payload = {
       client_name: config.container_domain,
       events: [{
         name: data.event_type,
@@ -123,6 +111,18 @@ export async function sendStapeConversion(data: StapeConversionData): Promise<bo
         }
       }]
     };
+  
+  try {
+    console.log('🚀 Sending Stape.io S2S conversion:', {
+      event_type: data.event_type,
+      lead_id: data.lead_id,
+      name: data.name,
+      email: data.email,
+      city: data.city,
+      brand: data.brand,
+      model: data.model,
+      payout_method: data.payout_method,
+    });
     
     // Send to Stape.io S2S endpoint
     const response = await fetch(config.endpoint, {
@@ -179,7 +179,7 @@ export function createStapeConversionFromLead(
     userAgent?: string;
     ipAddress?: string;
     sessionId?: string;
-    customProperties?: Record<string, any>;
+    customProperties?: Record<string, unknown>;
   } = {}
 ): StapeConversionData {
   return {
@@ -244,7 +244,7 @@ export async function trackButtonClick(
     userAgent?: string;
     ipAddress?: string;
     sessionId?: string;
-    customProperties?: Record<string, any>;
+    customProperties?: Record<string, unknown>;
   } = {}
 ): Promise<boolean> {
   const conversionData: StapeConversionData = {

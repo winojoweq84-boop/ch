@@ -69,7 +69,7 @@ export default function TestStapePage() {
           <ol className="list-decimal list-inside space-y-2 text-gray-300">
             <li>Make sure you have created <code className="bg-gray-700 px-2 py-1 rounded">.env.local</code> with your Stape.io API key</li>
             <li>Update the endpoint URL with your actual Stape.io container domain</li>
-            <li>Click the "Test Stape.io Integration" button below</li>
+            <li>Click the &quot;Test Stape.io Integration&quot; button below</li>
             <li>Check the results and your Stape.io dashboard</li>
           </ol>
         </div>

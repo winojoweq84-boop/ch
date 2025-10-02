@@ -10,7 +10,7 @@ try {
     console.error("❌ Unresolved merge conflict markers found:\n" + out);
     process.exit(1);
   }
-} catch (e) {
+} catch {
   // git grep exits 1 when nothing found; treat that as success
   process.exit(0);
 }

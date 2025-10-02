@@ -2,7 +2,9 @@
  * Scans repo for likely PII or secrets and prints matches with file:line.
  * Adjust patterns as needed.
  */
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const fs = require('fs');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const path = require('path');
 
 const root = process.cwd();

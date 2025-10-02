@@ -128,7 +128,7 @@ export default function FAQ() {
             collapsible
             className="bg-asphalt/40 backdrop-blur-sm rounded-3xl w-full border-0 px-6 lg:px-8 py-4 shadow-2xl"
           >
-            {faqItems.map((item, index) => (
+            {faqItems.map((item) => (
               <AccordionItem
                 key={item.id}
                 value={item.id}

@@ -50,6 +50,7 @@ function Badge({ className, variant, animateOnAppear = true, ...props }: BadgePr
 
   if (!animateOnAppear) {
     // Filter out motion-specific props when using regular div
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- destructuring to filter out motion props
     const { onDrag: _onDrag, onDragStart: _onDragStart, onDragEnd: _onDragEnd, onAnimationStart: _onAnimationStart, onAnimationComplete: _onAnimationComplete, ...htmlProps } = props;
     return (
       <div className={cn(badgeVariants({ variant }), className)} {...htmlProps} />

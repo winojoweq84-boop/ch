@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
           token: body.token,
           source: body.source || 'api_form',
         }, {
-          leadId,
+          leadId: leadId || undefined,
           userAgent,
           ipAddress,
           sessionId,

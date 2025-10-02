@@ -1,5 +1,6 @@
 // Test script for Facebook Conversions API integration
 // Using built-in fetch (Node.js 18+)
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const crypto = require('crypto');
 
 function hashUserData(data) {

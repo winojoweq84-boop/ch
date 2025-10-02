@@ -11,6 +11,7 @@ process.env.STAPE_API_KEY = 'test_api_key_123';
 process.env.STAPE_CONTAINER_DOMAIN = 'cars-vault.com';
 
 // Import the Stape.io functions
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { sendStapeConversion, createStapeConversionFromLead } = require('../src/lib/stape.ts');
 
 async function testStapeIntegration() {

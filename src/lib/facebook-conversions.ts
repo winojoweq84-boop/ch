@@ -34,7 +34,7 @@ export interface FacebookConversionData {
   session_id?: string;
   
   // Custom properties
-  custom_properties?: Record<string, any>;
+  custom_properties?: Record<string, unknown>;
 }
 
 export interface FacebookConfig {
@@ -80,20 +80,8 @@ export async function sendFacebookConversion(data: FacebookConversionData): Prom
     return false;
   }
   
-  try {
-    console.log('🚀 Sending Facebook Conversions API event:', {
-      event_name: data.event_name,
-      lead_id: data.lead_id,
-      name: data.name,
-      email: data.email,
-      city: data.city,
-      brand: data.brand,
-      model: data.model,
-      payout_method: data.payout_method,
-    });
-    
-    // Prepare the payload for Facebook Conversions API
-    const payload = {
+  // Prepare the payload for Facebook Conversions API
+  const payload = {
       data: [{
         event_name: data.event_name,
         event_time: Math.floor(Date.parse(data.timestamp) / 1000),
@@ -124,6 +112,18 @@ export async function sendFacebookConversion(data: FacebookConversionData): Prom
       }],
       test_event_code: process.env.FACEBOOK_TEST_EVENT_CODE || undefined,
     };
+  
+  try {
+    console.log('🚀 Sending Facebook Conversions API event:', {
+      event_name: data.event_name,
+      lead_id: data.lead_id,
+      name: data.name,
+      email: data.email,
+      city: data.city,
+      brand: data.brand,
+      model: data.model,
+      payout_method: data.payout_method,
+    });
     
     // Send to Facebook Conversions API
     const response = await fetch(
@@ -184,7 +184,7 @@ export function createFacebookConversionFromLead(
     userAgent?: string;
     ipAddress?: string;
     sessionId?: string;
-    customProperties?: Record<string, any>;
+    customProperties?: Record<string, unknown>;
   } = {}
 ): FacebookConversionData {
   return {

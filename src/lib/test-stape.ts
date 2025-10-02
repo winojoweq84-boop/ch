@@ -52,5 +52,5 @@ export function testStapeIntegration() {
 
 // Make it available globally for console testing
 if (typeof window !== 'undefined') {
-  (window as any).testStapeIntegration = testStapeIntegration;
+  (window as unknown as { testStapeIntegration: typeof testStapeIntegration }).testStapeIntegration = testStapeIntegration;
 }
