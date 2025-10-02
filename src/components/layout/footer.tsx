@@ -4,8 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export default function Footer() {
-  // Next.js Image component automatically handles basePath
-  const logoSrc = "/images/3893893399.png";
+  // Use prefix helper to ensure correct basePath
+  const logoSrc = process.env.NEXT_PUBLIC_BASE_PATH ? `${process.env.NEXT_PUBLIC_BASE_PATH}/images/3893893399.png` : "/images/3893893399.png";
 
   return (
     <footer className="border-t border-white/10 bg-[#0A0A0B] no-x-scroll px-safe">

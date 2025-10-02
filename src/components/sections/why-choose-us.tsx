@@ -23,8 +23,8 @@ function FeatureCard({ feature, index }: { feature: typeof FEATURES[0], index: n
   const shouldReduceMotion = useReducedMotion();
   const IconComponent = feature.icon;
   
-  // Next.js Image component automatically handles basePath
-  const imageSrc = feature.image;
+  // Use prefix helper to ensure correct basePath
+  const imageSrc = process.env.NEXT_PUBLIC_BASE_PATH ? `${process.env.NEXT_PUBLIC_BASE_PATH}${feature.image}` : feature.image;
 
   const containerVariants = {
     hidden: { opacity: 0 },

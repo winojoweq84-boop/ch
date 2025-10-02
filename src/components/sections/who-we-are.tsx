@@ -9,8 +9,8 @@ import { getAssetPath } from "@/lib/basepath";
 export default function WhoWeAre() {
   const shouldReduceMotion = useReducedMotion();
   
-  // Next.js Image component automatically handles basePath
-  const imageSrc = "/images/342343 fvdfef.png";
+  // Use prefix helper to ensure correct basePath
+  const imageSrc = process.env.NEXT_PUBLIC_BASE_PATH ? `${process.env.NEXT_PUBLIC_BASE_PATH}/images/342343 fvdfef.png` : "/images/342343 fvdfef.png";
 
   const containerVariants = {
     hidden: { opacity: 0 },

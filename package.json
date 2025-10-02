@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "prebuild": "node scripts/check-conflicts.mjs",
     "build": "next build",
-    "pages:build": "cross-env GITHUB_PAGES=true NEXT_PUBLIC_REPO=car next build",
+    "pages:build": "cross-env GITHUB_PAGES=true NEXT_PUBLIC_BASE_PATH=/test1 next build",
     "pages:post": "mkdir -p out && cp -f public/404.html out/404.html 2>/dev/null || true && touch out/.nojekyll",
     "start": "next start",
     "lint": "eslint",
