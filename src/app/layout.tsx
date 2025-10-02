@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Saira_Semi_Condensed, Tajawal } from "next/font/google";
 import "./globals.css";
+import { getPrefixedUrl } from "@/lib/prefix";
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -40,7 +41,7 @@ export default function RootLayout({
   return (
     <html lang="en" dir="ltr">
       <head>
-        <link rel="preload" as="video" href="/videos/intro.mp4" />
+        <link rel="preload" as="video" href={getPrefixedUrl("/videos/intro.mp4")} />
       </head>
       <body className={`min-h-screen bg-carbon text-pearl antialiased ${inter.variable} ${saira.variable} ${tajawal.variable}`}>
         {children}

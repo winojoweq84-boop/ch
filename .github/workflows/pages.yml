@@ -26,25 +26,35 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install deps
-        run: npm ci
+      - run: npm ci
 
-      - name: Build site
+      - name: Determine BASE_PATH
+        id: bp
+        shell: bash
         run: |
-          npm run pages:build
-          # If using Next.js export, make sure next.config sets `output: 'export'`
-          # and the exported folder is ./out
+          REPO="${GITHUB_REPOSITORY#*/}"            # owner/repo -> repo
+          OWNER="${GITHUB_REPOSITORY%%/*}"          # owner
+          # If it's a user/org page (owner.github.io), base path is empty; else "/repo"
+          if [[ "$REPO" == "${OWNER}.github.io" ]]; then
+            echo "basepath=" >> $GITHUB_OUTPUT
+          else
+            echo "basepath=/$REPO" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build (static export)
         env:
           GITHUB_PAGES: "true"
-          NEXT_PUBLIC_REPO: "car"
+          NEXT_PUBLIC_BASE_PATH: "${{ steps.bp.outputs.basepath }}"
+        run: |
+          echo "Using NEXT_PUBLIC_BASE_PATH=${NEXT_PUBLIC_BASE_PATH}"
+          npm run build
 
       - name: Post-build setup
         run: npm run pages:post
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v3
         with:
-          path: ./out   # <— change if your folder is dist/ or build/
+          path: ./out
 
   deploy:
     needs: build
@@ -52,8 +62,6 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    # DO NOT override permissions here unless you repeat id-token/pages
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4

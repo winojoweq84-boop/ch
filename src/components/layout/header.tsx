@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
+import { getPrefixedUrl } from '@/lib/prefix';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -64,7 +65,7 @@ export default function Header() {
             className="inline-flex items-center gap-2"
           >
             <Image
-              src="/images/3893893399.png"
+              src={getPrefixedUrl("/images/3893893399.png")}
               alt="CarVault UAE Logo"
               width={800}
               height={120}
