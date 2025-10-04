@@ -1,9 +1,53 @@
 "use client";
 
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle, Car, Zap, Clock } from "lucide-react";
+import { trackLead } from "@/lib/facebook-pixel";
 
 export default function ThankYouPage() {
+  useEffect(() => {
+    // Get lead data from session storage
+    let leadData = null;
+    if (typeof window !== 'undefined') {
+      try {
+        const storedData = sessionStorage.getItem('leadData');
+        if (storedData) {
+          leadData = JSON.parse(storedData);
+          // Clear the data after use to prevent duplicate tracking
+          sessionStorage.removeItem('leadData');
+        }
+      } catch (error) {
+        console.warn('Failed to parse lead data from session storage:', error);
+      }
+    }
+
+    // Track lead conversion when user reaches thank you page
+    const trackingData = {
+      content_name: leadData 
+        ? `${leadData.brand} ${leadData.model} Valuation Lead`
+        : 'Car Valuation Lead',
+      content_category: 'Car Valuation',
+      value: 1,
+      currency: 'USD',
+      page_url: window.location.href,
+      page_title: document.title,
+    };
+
+    // Add lead-specific data if available
+    if (leadData) {
+      Object.assign(trackingData, {
+        car_brand: leadData.brand,
+        car_model: leadData.model,
+        payout_method: leadData.payoutMethod,
+        crypto_token: leadData.token,
+        city: leadData.city,
+        lead_timestamp: leadData.timestamp,
+      });
+    }
+
+    trackLead(trackingData);
+  }, []);
   return (
     <div className="min-h-screen bg-carbon flex items-center justify-center px-4">
       <motion.div

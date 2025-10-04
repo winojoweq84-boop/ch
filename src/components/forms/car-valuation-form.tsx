@@ -172,6 +172,21 @@ export function CarValuationForm() {
         });
       }
       
+      // Store lead data for thank-you page tracking
+      const leadData = {
+        brand: data.brand === "Other" ? (data.otherBrand || data.brand) : data.brand,
+        model: (data.model === "Other" || data.brand === "Other") ? (data.otherModel || data.model) : data.model,
+        payoutMethod: data.payoutType,
+        token: data.payoutType === "crypto" ? data.token : undefined,
+        city: data.city === "Other" ? (data.otherCity || data.city) : data.city,
+        timestamp: new Date().toISOString(),
+      };
+      
+      // Store in session storage for thank-you page
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('leadData', JSON.stringify(leadData));
+      }
+      
       // Redirect to thank you page
       router.push('/thank-you');
     } catch (error) {
