@@ -5,10 +5,14 @@
  * from the client-side of the application.
  */
 
+// Facebook Pixel command types
+type FbqCommand = "init" | "track" | "consent" | "trackCustom";
+type Fbq = (cmd: FbqCommand, ...args: unknown[]) => void;
+
 // Extend the Window interface to include fbq
 declare global {
   interface Window {
-    fbq: (command: string, eventName: string, parameters?: Record<string, any>) => void;
+    fbq?: Fbq;
   }
 }
 
@@ -22,14 +26,14 @@ export function isFacebookPixelLoaded(): boolean {
 /**
  * Track a Facebook Pixel event
  */
-export function trackFacebookEvent(eventName: string, parameters?: Record<string, any>): void {
+export function trackFacebookEvent(eventName: string, parameters?: Record<string, unknown>): void {
   if (!isFacebookPixelLoaded()) {
     console.warn('⚠️ Facebook Pixel not loaded, skipping event:', eventName);
     return;
   }
 
   try {
-    window.fbq('track', eventName, parameters);
+    window.fbq?.('track', eventName, parameters);
     console.log('✅ Facebook Pixel event tracked:', eventName, parameters);
   } catch (error) {
     console.error('❌ Failed to track Facebook Pixel event:', eventName, error);
@@ -39,14 +43,14 @@ export function trackFacebookEvent(eventName: string, parameters?: Record<string
 /**
  * Track a custom Facebook Pixel event
  */
-export function trackFacebookCustomEvent(eventName: string, parameters?: Record<string, any>): void {
+export function trackFacebookCustomEvent(eventName: string, parameters?: Record<string, unknown>): void {
   if (!isFacebookPixelLoaded()) {
     console.warn('⚠️ Facebook Pixel not loaded, skipping custom event:', eventName);
     return;
   }
 
   try {
-    window.fbq('trackCustom', eventName, parameters);
+    window.fbq?.('trackCustom', eventName, parameters);
     console.log('✅ Facebook Pixel custom event tracked:', eventName, parameters);
   } catch (error) {
     console.error('❌ Failed to track Facebook Pixel custom event:', eventName, error);
@@ -68,7 +72,7 @@ export function trackLead(leadData?: {
   content_category?: string;
   value?: number;
   currency?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }): void {
   const parameters = {
     content_name: leadData?.content_name || 'Car Valuation Lead',
@@ -88,7 +92,7 @@ export function trackViewContent(contentData?: {
   content_name?: string;
   content_category?: string;
   content_type?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }): void {
   const parameters = {
     content_name: contentData?.content_name || 'Car Valuation Page',
@@ -107,7 +111,7 @@ export function trackCompleteRegistration(registrationData?: {
   content_name?: string;
   value?: number;
   currency?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }): void {
   const parameters = {
     content_name: registrationData?.content_name || 'Car Valuation Registration',
@@ -122,7 +126,7 @@ export function trackCompleteRegistration(registrationData?: {
 /**
  * Track custom car valuation events
  */
-export function trackCarValuationEvent(eventType: 'form_started' | 'form_completed' | 'offer_viewed', data?: Record<string, any>): void {
+export function trackCarValuationEvent(eventType: 'form_started' | 'form_completed' | 'offer_viewed', data?: Record<string, unknown>): void {
   const eventName = `CarValuation_${eventType}`;
   const parameters = {
     event_type: eventType,

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { trackLead, trackViewContent, trackFacebookEvent, isFacebookPixelLoaded } from "@/lib/facebook-pixel";
 
 export default function TestFacebookPixelPage() {
@@ -141,12 +142,12 @@ export default function TestFacebookPixelPage() {
 
         {/* Navigation */}
         <div className="mt-8 text-center">
-          <a
+          <Link
             href="/"
             className="inline-block bg-taillight-red hover:bg-taillight-red/80 text-white px-6 py-3 rounded-md transition-colors"
           >
             Back to Home
-          </a>
+          </Link>
         </div>
       </div>
     </div>

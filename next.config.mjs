@@ -1,5 +1,4 @@
 // next.config.mjs
-const isProd = process.env.NODE_ENV === 'production';
 const isPagesBuild = process.env.GITHUB_PAGES === 'true'; // set only in GH Actions
 
 // When deploying to GitHub Pages project sites, set this to "/<repo-name>".
