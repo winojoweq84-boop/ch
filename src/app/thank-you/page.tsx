@@ -8,8 +8,8 @@ import { trackLead } from "@/lib/facebook-pixel";
 // GTM dataLayer type declaration
 declare global {
   interface Window {
-    dataLayer: any[];
-    gtag: (...args: any[]) => void;
+    dataLayer: unknown[];
+    gtag: (...args: unknown[]) => void;
   }
 }
 

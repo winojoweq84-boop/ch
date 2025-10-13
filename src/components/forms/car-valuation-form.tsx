@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 // GTM dataLayer type declaration
 declare global {
   interface Window {
-    dataLayer: any[];
+    dataLayer: unknown[];
   }
 }
 

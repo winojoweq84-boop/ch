@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter, Saira_Semi_Condensed, Tajawal } from "next/font/google";
-import Image from "next/image";
 import "./globals.css";
 import { getPrefixedUrl } from "@/lib/prefix";
 
@@ -87,13 +86,12 @@ export default function RootLayout({
           }}
         />
         <noscript>
-          <Image
+          <img
             height={1}
             width={1}
             style={{ display: 'none' }}
             src="https://www.facebook.com/tr?id=1281523864018075&ev=PageView&noscript=1"
             alt=""
-            role="presentation"
           />
         </noscript>
       </head>
