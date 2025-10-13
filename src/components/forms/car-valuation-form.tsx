@@ -12,6 +12,13 @@ import { BRANDS, MODELS } from "@/data/carOptions";
 import { sendLeadToWebhook } from "@/lib/lead";
 import { useRouter } from "next/navigation";
 
+// GTM dataLayer type declaration
+declare global {
+  interface Window {
+    dataLayer: any[];
+  }
+}
+
 const EMIRATES = [
   "Dubai",
   "Abu Dhabi",
@@ -141,6 +148,30 @@ export function CarValuationForm() {
     setIsSubmitting(true);
     try {
       console.log("Form data:", data);
+      
+      // Push GTM event for form submission
+      if (typeof window !== 'undefined' && window.dataLayer) {
+        window.dataLayer.push({
+          event: 'form_submission',
+          form_name: 'car_valuation_form',
+          form_location: 'hero_section',
+          lead_data: {
+            brand: data.brand === "Other" ? (data.otherBrand || data.brand) : data.brand,
+            model: (data.model === "Other" || data.brand === "Other") ? (data.otherModel || data.model) : data.model,
+            payout_method: data.payoutType,
+            token: data.payoutType === "crypto" ? data.token : undefined,
+            city: data.city === "Other" ? (data.otherCity || data.city) : data.city,
+          }
+        });
+        
+        // Also push conversion event for Google Ads
+        window.dataLayer.push({
+          event: 'conversion',
+          conversion_type: 'car_valuation_submission',
+          conversion_value: 1,
+          currency: 'USD'
+        });
+      }
       
       // Try to send to webhook (but don't fail the form if it fails)
       try {

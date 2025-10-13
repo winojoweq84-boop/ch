@@ -5,6 +5,14 @@ import { motion } from "framer-motion";
 import { CheckCircle, Car, Zap, Clock } from "lucide-react";
 import { trackLead } from "@/lib/facebook-pixel";
 
+// GTM dataLayer type declaration
+declare global {
+  interface Window {
+    dataLayer: any[];
+    gtag: (...args: any[]) => void;
+  }
+}
+
 export default function ThankYouPage() {
   useEffect(() => {
     // Get lead data from session storage
@@ -47,6 +55,41 @@ export default function ThankYouPage() {
     }
 
     trackLead(trackingData);
+    
+    // Push GTM event for successful conversion
+    if (typeof window !== 'undefined' && window.dataLayer) {
+      window.dataLayer.push({
+        event: 'purchase',
+        transaction_id: leadData?.timestamp || Date.now().toString(),
+        value: 1,
+        currency: 'USD',
+        items: [{
+          item_id: leadData?.brand + '_' + leadData?.model || 'car_valuation',
+          item_name: leadData ? `${leadData.brand} ${leadData.model} Valuation` : 'Car Valuation',
+          category: 'Car Valuation',
+          quantity: 1,
+          price: 1
+        }]
+      });
+      
+      // Also push a lead conversion event
+      window.dataLayer.push({
+        event: 'lead_conversion',
+        lead_type: 'car_valuation',
+        lead_value: 1,
+        currency: 'USD',
+        lead_data: leadData || {}
+      });
+    }
+    
+    // Google Ads conversion tracking
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'conversion', {
+        'send_to': 'AW-17534484313/tvOhCPa376sbENn-i6IB',
+        'value': 1.0,
+        'currency': 'USD'
+      });
+    }
   }, []);
   return (
     <div className="min-h-screen bg-carbon flex items-center justify-center px-4">
@@ -123,8 +166,6 @@ export default function ThankYouPage() {
             </div>
           </div>
         </motion.div>
-
-
 
       </motion.div>
     </div>
