@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Saira_Semi_Condensed, Tajawal } from "next/font/google";
 import Script from "next/script";
+import Image from "next/image";
 import "./globals.css";
 import { getPrefixedUrl } from "@/lib/prefix";
 
@@ -77,7 +78,7 @@ export default function RootLayout({
           }}
         />
         <noscript>
-          <img
+          <Image
             height={1}
             width={1}
             style={{ display: 'none' }}
