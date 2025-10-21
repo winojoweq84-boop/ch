@@ -18,7 +18,7 @@ export default function FAQ() {
     {
       id: 'item-2',
       question: 'What payment methods do you accept?',
-      answer: 'We accept multiple payment methods including USDT, USDC, Bitcoin, Ethereum, and traditional cash payments. All crypto payments are processed instantly to your wallet, while cash payments are available for same-day transactions.',
+      answer: 'We accept crypto payments in USDT and USDC only. These stablecoins provide the best rates and instant settlement to your wallet. All payments are processed immediately upon completion of the sale.',
     },
     {
       id: 'item-3',
@@ -49,6 +49,26 @@ export default function FAQ() {
       id: 'item-8',
       question: 'Can I sell my car if I still have a loan?',
       answer: 'Absolutely! We work with banks and finance companies to settle outstanding loans. We can pay off your remaining balance directly to the bank and give you the difference, or help you understand your options if you owe more than the car\'s value.',
+    },
+    {
+      id: 'item-9',
+      question: 'What is USDT and why do you use it?',
+      answer: 'USDT (Tether) is a stablecoin pegged to the US dollar, meaning 1 USDT = $1 USD. It\'s widely accepted, has low transaction fees, and provides instant transfers. We use USDT because it offers better rates than traditional banking and eliminates currency conversion fees.',
+    },
+    {
+      id: 'item-10',
+      question: 'What is USDC and how does it work?',
+      answer: 'USDC (USD Coin) is another stablecoin pegged to the US dollar, similar to USDT but issued by Circle. It\'s fully regulated, transparent, and widely trusted. USDC offers the same benefits as USDT with instant settlement and better rates than traditional payment methods.',
+    },
+    {
+      id: 'item-11',
+      question: 'How do I receive my crypto payment?',
+      answer: 'Simply provide your wallet address for USDT or USDC when completing the sale. We\'ll send the payment directly to your wallet within minutes of finalizing the transaction. You can use any compatible wallet like MetaMask, Trust Wallet, or exchange wallets.',
+    },
+    {
+      id: 'item-12',
+      question: 'Are crypto payments safe and legal?',
+      answer: 'Yes! Crypto payments are completely legal in the UAE and offer enhanced security through blockchain technology. All transactions are recorded on the blockchain, providing transparency and protection. We only use established stablecoins (USDT/USDC) to minimize volatility.',
     },
   ];
 

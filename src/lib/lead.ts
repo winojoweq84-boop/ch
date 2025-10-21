@@ -5,9 +5,8 @@ export type LeadPayload = {
   city: string;
   phone: string;
   email: string;
-  payoutMethod: 'crypto' | 'cash';
-  token?: string;
-  otherToken?: string;
+  payoutMethod: 'crypto';
+  token: string;
   brand?: string;
   model?: string;
   otherBrand?: string;
@@ -48,8 +47,8 @@ export async function sendLeadToWebhook(payload: LeadPayload) {
       phone: payload.phone,
       email: payload.email,
       city: payload.city,
-      payout_method: payload.payoutMethod === 'crypto' ? 'Crypto' : 'Cash',
-      crypto_token: payload.token || null,
+      payout_method: 'Crypto',
+      crypto_token: payload.token,
       brand: payload.brand || '',
       model: payload.model || '',
       telegram_sent: false,
@@ -78,8 +77,8 @@ export async function sendLeadToWebhook(payload: LeadPayload) {
     const telegramApi = `https://api.telegram.org/bot${botToken}/sendMessage`;
     
     // Format payout method for display
-    const payoutDisplay = payload.payoutMethod === 'crypto' ? 'Crypto' : 'Cash';
-    const cryptoToken = payload.token ? ` (${payload.token})` : '';
+    const payoutDisplay = 'Crypto';
+    const cryptoToken = ` (${payload.token})`;
     
     // Escape special characters for MarkdownV2
     function escapeMarkdown(text: string): string {
@@ -150,7 +149,6 @@ export async function sendLeadToWebhook(payload: LeadPayload) {
         customProperties: {
           other_brand: payload.otherBrand,
           other_model: payload.otherModel,
-          other_token: payload.otherToken,
           other_city: payload.city === 'Other' ? payload.otherCity : undefined,
         },
       });

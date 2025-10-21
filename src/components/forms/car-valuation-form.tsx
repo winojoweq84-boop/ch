@@ -25,17 +25,8 @@ const EMIRATES = [
 ] as const;
 
 const TOKENS = [
-  "USDC",
-  "ETH",
-  "SOL",
   "USDT",
-  "BTC",
-  "BNB",
-  "XRP",
-  "TRX",
-  "ADA",
-  "MATIC",
-  "Other",
+  "USDC",
 ] as const;
 
 const schema = z
@@ -48,13 +39,11 @@ const schema = z
       .trim()
       .regex(/^\+?\d[\d\s\-()]{7,}$/i, "Enter a valid phone number"),
     email: z.string().email("Enter a valid email"),
-    payoutType: z.enum(["crypto", "cash"], {
-      message: "Choose payout method",
+    payoutType: z.enum(["crypto"], {
+      message: "Crypto payment is required",
     }),
     token: z
-      .enum(TOKENS)
-      .optional(), // required only if payoutType=crypto
-    otherToken: z.string().optional(),
+      .enum(TOKENS), // required for crypto payment
     // NEW: Brand and model fields
     brand: z.enum(BRANDS, { message: "Select your car brand" }),
     model: z.string().min(1, "Please specify model"),
@@ -69,18 +58,11 @@ const schema = z
         message: "Type your city/emirate",
       });
     }
-    if (val.payoutType === "crypto" && !val.token) {
+    if (!val.token) {
       ctx.addIssue({
         path: ["token"],
         code: z.ZodIssueCode.custom,
-        message: "Select a crypto",
-      });
-    }
-    if (val.payoutType === "crypto" && val.token === "Other" && !val.otherToken) {
-      ctx.addIssue({
-        path: ["otherToken"],
-        code: z.ZodIssueCode.custom,
-        message: "Type your preferred token",
+        message: "Select a crypto token",
       });
     }
     // NEW: Brand/model validation
@@ -117,8 +99,6 @@ export function CarValuationForm() {
     defaultValues: { payoutType: "crypto" },
   });
 
-  const payoutType = watch("payoutType");
-  const token = watch("token");
   const selectedCity = watch("city");
   const selectedBrand = watch("brand");
 
@@ -151,9 +131,8 @@ export function CarValuationForm() {
           city: data.city === "Other" ? (data.otherCity || data.city) : data.city,
           phone: data.phone,
           email: data.email,
-          payoutMethod: data.payoutType,
-          token: data.payoutType === "crypto" ? data.token : undefined,
-          otherToken: data.payoutType === "crypto" && data.token === "Other" ? data.otherToken : undefined,
+          payoutMethod: "crypto",
+          token: data.token,
           brand: data.brand === "Other" ? (data.otherBrand || data.brand) : data.brand,
           model: (data.model === "Other" || data.brand === "Other") ? (data.otherModel || data.model) : data.model,
           source: "hero_form_compact",
@@ -169,8 +148,8 @@ export function CarValuationForm() {
           city: data.city === "Other" ? (data.otherCity || data.city) : data.city,
           brand: data.brand === "Other" ? (data.otherBrand || data.brand) : data.brand,
           model: (data.model === "Other" || data.brand === "Other") ? (data.otherModel || data.model) : data.model,
-          payoutMethod: data.payoutType,
-          token: data.payoutType === "crypto" ? data.token : undefined,
+          payoutMethod: "crypto",
+          token: data.token,
         });
       }
       
@@ -178,8 +157,8 @@ export function CarValuationForm() {
       const leadData = {
         brand: data.brand === "Other" ? (data.otherBrand || data.brand) : data.brand,
         model: (data.model === "Other" || data.brand === "Other") ? (data.otherModel || data.model) : data.model,
-        payoutMethod: data.payoutType,
-        token: data.payoutType === "crypto" ? data.token : undefined,
+        payoutMethod: "crypto",
+        token: data.token,
         city: data.city === "Other" ? (data.otherCity || data.city) : data.city,
         timestamp: new Date().toISOString(),
       };
@@ -368,72 +347,36 @@ export function CarValuationForm() {
               )}
             </div>
 
-            {/* Payout method */}
+            {/* Crypto payment info */}
             <div className="space-y-2">
-              <label className="block text-sm text-pearl">Payout method *</label>
-              <div className="flex flex-wrap gap-3">
-                <label className="inline-flex items-center gap-2 text-pearl cursor-pointer">
-                  <input 
-                    type="radio" 
-                    value="crypto" 
-                    {...register("payoutType")}
-                    className="text-taillight-red focus:ring-taillight-red"
-                  />
-                  <span>Crypto <span className="text-desert-gold">(better terms)</span></span>
-                </label>
-                <label className="inline-flex items-center gap-2 text-pearl cursor-pointer">
-                  <input 
-                    type="radio" 
-                    value="cash" 
-                    {...register("payoutType")}
-                    className="text-taillight-red focus:ring-taillight-red"
-                  />
-                  <span>Cash</span>
-                </label>
+              <div className="flex items-center gap-2 text-pearl">
+                <span className="text-sm font-medium">Payment Method:</span>
+                <span className="text-desert-gold font-semibold">Crypto (Better Terms)</span>
               </div>
-              {errors.payoutType && (
-                <p className="text-xs text-taillight-red">{errors.payoutType.message}</p>
-              )}
+              <p className="text-xs text-slate-400">
+                We offer better rates for crypto payments with instant settlement
+              </p>
             </div>
 
-            {/* Token select (conditional) */}
-            {payoutType === "crypto" && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm mb-1 text-pearl">Crypto token *</label>
-                  <select
-                    {...register("token")}
-                    defaultValue=""
-                    className="w-full rounded-md bg-carbon border border-trim-silver/30 px-3 py-2 text-pearl focus:outline-none focus:ring-1 focus:ring-taillight-red"
-                  >
-                    <option value="" disabled>
-                      Select token
-                    </option>
-                    {TOKENS.map((t) => (
-                      <option key={t} value={t}>
-                        {t}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.token && <p className="text-xs text-taillight-red mt-1">{errors.token.message}</p>}
-                </div>
-
-                {token === "Other" && (
-                  <div>
-                    <label className="block text-sm mb-1 text-pearl">Preferred token</label>
-                    <input
-                      {...register("otherToken")}
-                      type="text"
-                      placeholder="e.g., TON, AVAX"
-                      className="w-full rounded-md bg-carbon border border-trim-silver/30 px-3 py-2 text-pearl placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-taillight-red"
-                    />
-                    {errors.otherToken && (
-                      <p className="text-xs text-taillight-red mt-1">{errors.otherToken.message}</p>
-                    )}
-                  </div>
-                )}
-              </div>
-            )}
+            {/* Token select */}
+            <div>
+              <label className="block text-sm mb-1 text-pearl">Crypto token *</label>
+              <select
+                {...register("token")}
+                defaultValue=""
+                className="w-full rounded-md bg-carbon border border-trim-silver/30 px-3 py-2 text-pearl focus:outline-none focus:ring-1 focus:ring-taillight-red"
+              >
+                <option value="" disabled>
+                  Select token
+                </option>
+                {TOKENS.map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </select>
+              {errors.token && <p className="text-xs text-taillight-red mt-1">{errors.token.message}</p>}
+            </div>
 
             {/* Submit */}
             <Button
