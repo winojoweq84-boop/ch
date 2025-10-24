@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CheckCircle, Car, Zap, Clock } from "lucide-react";
+import { CheckCircle, Car, Zap, Clock, Shield } from "lucide-react";
 import Script from "next/script";
 import { ThankYouTracking } from "./ThankYouTracking";
 
@@ -46,14 +46,53 @@ export default function ThankYouPage() {
           transition={{ delay: 0.5 }}
           className="text-slate-400 text-lg md:text-xl mb-8 leading-relaxed"
         >
-          Your car valuation request has been submitted successfully. Our team will contact you within 24 hours with your personalized offer.
+          Your car valuation request has been submitted successfully. You've chosen <span className="text-emerald-400 font-semibold">Crypto Payment</span> for the best rates and instant settlement. Our team will contact you within 24 hours with your personalized offer.
         </motion.p>
+
+        {/* Crypto Benefits */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="bg-gradient-to-br from-emerald-900/20 to-emerald-800/10 rounded-2xl p-6 mb-8 border border-emerald-500/30"
+        >
+          <h2 className="font-saira text-xl font-bold text-emerald-300 mb-4">🚀 Crypto Payment Benefits</h2>
+          <div className="space-y-4 text-left">
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 bg-emerald-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Zap className="w-4 h-4 text-emerald-400" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-emerald-200">5-10% Higher Payout</h3>
+                <p className="text-emerald-300/80 text-sm">You'll receive significantly more for your car with crypto payment</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 bg-emerald-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Clock className="w-4 h-4 text-emerald-400" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-emerald-200">Instant Settlement</h3>
+                <p className="text-emerald-300/80 text-sm">No banking delays - receive your payment immediately</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 bg-emerald-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Shield className="w-4 h-4 text-emerald-400" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-emerald-200">Zero Fees</h3>
+                <p className="text-emerald-300/80 text-sm">No processing fees or banking charges</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
 
         {/* What Happens Next */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.7 }}
           className="bg-asphalt/50 rounded-2xl p-6 mb-8 border border-trim-silver/20"
         >
           <h2 className="font-saira text-xl font-bold text-pearl mb-4">What happens next?</h2>

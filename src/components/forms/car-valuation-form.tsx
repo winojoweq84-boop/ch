@@ -4,13 +4,12 @@ import { useState, useMemo, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Car, Zap, Clock } from "lucide-react";
+import { Car, Zap, Clock, ArrowRight } from "lucide-react";
 import { BRANDS, MODELS } from "@/data/carOptions";
-import { sendLeadToWebhook } from "@/lib/lead";
-import { useRouter } from "next/navigation";
+import { PaymentMethodSelection } from "./payment-method-selection";
 
 
 const EMIRATES = [
@@ -39,12 +38,7 @@ const schema = z
       .trim()
       .regex(/^\+?\d[\d\s\-()]{7,}$/i, "Enter a valid phone number"),
     email: z.string().email("Enter a valid email"),
-    payoutType: z.enum(["crypto"], {
-      message: "Crypto payment is required",
-    }),
-    token: z
-      .enum(TOKENS), // required for crypto payment
-    // NEW: Brand and model fields
+    // Brand and model fields
     brand: z.enum(BRANDS, { message: "Select your car brand" }),
     model: z.string().min(1, "Please specify model"),
     otherBrand: z.string().optional(),
@@ -58,14 +52,7 @@ const schema = z
         message: "Type your city/emirate",
       });
     }
-    if (!val.token) {
-      ctx.addIssue({
-        path: ["token"],
-        code: z.ZodIssueCode.custom,
-        message: "Select a crypto token",
-      });
-    }
-    // NEW: Brand/model validation
+    // Brand/model validation
     if (val.brand === "Other" && !val.otherBrand) {
       ctx.addIssue({
         path: ["otherBrand"],
@@ -86,7 +73,8 @@ type FormValues = z.infer<typeof schema>;
 
 export function CarValuationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter();
+  const [currentStep, setCurrentStep] = useState<'form' | 'payment'>('form');
+  const [formData, setFormData] = useState<any>(null);
 
   const {
     register,
@@ -96,7 +84,6 @@ export function CarValuationForm() {
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { payoutType: "crypto" },
   });
 
   const selectedCity = watch("city");
@@ -123,79 +110,43 @@ export function CarValuationForm() {
     try {
       console.log("Form data:", data);
       
-      
-      // Try to send to webhook (but don't fail the form if it fails)
-      try {
-        await sendLeadToWebhook({
-          name: data.name,
-          city: data.city === "Other" ? (data.otherCity || data.city) : data.city,
-          phone: data.phone,
-          email: data.email,
-          payoutMethod: "crypto",
-          token: data.token,
-          brand: data.brand === "Other" ? (data.otherBrand || data.brand) : data.brand,
-          model: (data.model === "Other" || data.brand === "Other") ? (data.otherModel || data.model) : data.model,
-          source: "hero_form_compact",
-        });
-        console.log("Lead sent successfully");
-      } catch (webhookError) {
-        console.warn("Webhook failed, but continuing with form submission:", webhookError);
-        // Log the lead data for manual processing if needed
-        console.log("Lead data for manual processing:", {
-          name: data.name,
-          phone: data.phone,
-          email: data.email,
-          city: data.city === "Other" ? (data.otherCity || data.city) : data.city,
-          brand: data.brand === "Other" ? (data.otherBrand || data.brand) : data.brand,
-          model: (data.model === "Other" || data.brand === "Other") ? (data.otherModel || data.model) : data.model,
-          payoutMethod: "crypto",
-          token: data.token,
-        });
-      }
-      
-      // Store lead data for thank-you page tracking
-      const leadData = {
-        brand: data.brand === "Other" ? (data.otherBrand || data.brand) : data.brand,
-        model: (data.model === "Other" || data.brand === "Other") ? (data.otherModel || data.model) : data.model,
-        payoutMethod: "crypto",
-        token: data.token,
-        city: data.city === "Other" ? (data.otherCity || data.city) : data.city,
-        timestamp: new Date().toISOString(),
-      };
-      
-      // Store in session storage for thank-you page
-      if (typeof window !== 'undefined') {
-        sessionStorage.setItem('leadData', JSON.stringify(leadData));
-      }
-      
-      // Redirect to thank you page
-      router.push('/thank-you');
+      // Store form data and move to payment selection
+      setFormData(data);
+      setCurrentStep('payment');
     } catch (error) {
       console.error("Unexpected error submitting form:", error);
-      // Even if there's an unexpected error, redirect to thank you page
-      router.push('/thank-you');
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const handleBackToForm = () => {
+    setCurrentStep('form');
+    setFormData(null);
+  };
+
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-    >
-      <Card className="max-w-2xl mx-auto bg-asphalt border-trim-silver/20">
-        <CardHeader className="text-center">
-          <div className="flex justify-center mb-4">
-            <div className="p-4 rounded-full bg-taillight-red/10 border border-taillight-red/30">
-              <Car className="h-8 w-8 text-taillight-red" />
-            </div>
-          </div>
-          <CardTitle className="text-2xl text-pearl">Get Your Instant Car Offer</CardTitle>
-          <p className="text-slate-400">Share a few details and receive a same-day, real-market offer. No branch visit.</p>
-        </CardHeader>
+    <div className="max-w-4xl mx-auto">
+      <AnimatePresence mode="wait">
+        {currentStep === 'form' ? (
+          <motion.div
+            key="form"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Card className="max-w-2xl mx-auto bg-asphalt border-trim-silver/20">
+              <CardHeader className="text-center">
+                <div className="flex justify-center mb-4">
+                  <div className="p-4 rounded-full bg-taillight-red/10 border border-taillight-red/30">
+                    <Car className="h-8 w-8 text-taillight-red" />
+                  </div>
+                </div>
+                <CardTitle className="text-2xl text-pearl">Get Your Instant Car Offer</CardTitle>
+                <p className="text-slate-400">Share a few details and receive a same-day, real-market offer. No branch visit.</p>
+              </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Name */}
@@ -347,36 +298,6 @@ export function CarValuationForm() {
               )}
             </div>
 
-            {/* Crypto payment info */}
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-pearl">
-                <span className="text-sm font-medium">Payment Method:</span>
-                <span className="text-desert-gold font-semibold">Crypto (Better Terms)</span>
-              </div>
-              <p className="text-xs text-slate-400">
-                We offer better rates for crypto payments with instant settlement
-              </p>
-            </div>
-
-            {/* Token select */}
-            <div>
-              <label className="block text-sm mb-1 text-pearl">Crypto token *</label>
-              <select
-                {...register("token")}
-                defaultValue=""
-                className="w-full rounded-md bg-carbon border border-trim-silver/30 px-3 py-2 text-pearl focus:outline-none focus:ring-1 focus:ring-taillight-red"
-              >
-                <option value="" disabled>
-                  Select token
-                </option>
-                {TOKENS.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
-                  </option>
-                ))}
-              </select>
-              {errors.token && <p className="text-xs text-taillight-red mt-1">{errors.token.message}</p>}
-            </div>
 
             {/* Submit */}
             <Button
@@ -390,23 +311,38 @@ export function CarValuationForm() {
               {isSubmitting ? (
                 <>
                   <Clock className="h-4 w-4 mr-2 animate-spin" />
-                  Calculating...
+                  Processing...
                 </>
               ) : (
                 <>
-                  <Zap className="h-4 w-4 mr-2" />
-                  Get My Offer
+                  <ArrowRight className="h-4 w-4 mr-2" />
+                  Continue to Payment
                 </>
               )}
             </Button>
 
             <p className="text-xs text-slate-400 text-center">
-              By submitting, you agree to our terms and privacy policy. 
-              KYC verification required for crypto payments.
+              By submitting, you agree to our terms and privacy policy.
             </p>
           </form>
         </CardContent>
       </Card>
     </motion.div>
+        ) : (
+          <motion.div
+            key="payment"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            transition={{ duration: 0.5 }}
+          >
+            <PaymentMethodSelection 
+              formData={formData} 
+              onBack={handleBackToForm}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }

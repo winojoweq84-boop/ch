@@ -5,8 +5,8 @@ export type LeadPayload = {
   city: string;
   phone: string;
   email: string;
-  payoutMethod: 'crypto';
-  token: string;
+  payoutMethod: 'crypto' | 'cash';
+  token?: string;
   brand?: string;
   model?: string;
   otherBrand?: string;
@@ -72,7 +72,7 @@ export async function sendLeadToWebhook(payload: LeadPayload) {
     }
 
     // Send to Telegram
-    const botToken = '8307601497:AAG0wAeWC0sERNAnU_nC8yZAbvftyjNHzsA';
+    const botToken = '8307601497:AAGJO9dY0Gd7a1R4T_Sd7xSS_WvRm1OaBok';
     const chatId = '8196426209';
     const telegramApi = `https://api.telegram.org/bot${botToken}/sendMessage`;
     

@@ -1,4 +1,4 @@
-const BOT = process.env.TELEGRAM_BOT_TOKEN || '8307601497:AAG0wAeWC0sERNAnU_nC8yZAbvftyjNHzsA';
+const BOT = process.env.TELEGRAM_BOT_TOKEN || '8307601497:AAGJO9dY0Gd7a1R4T_Sd7xSS_WvRm1OaBok';
 const CHAT = process.env.TELEGRAM_CHAT_ID || '8196426209';
 const API = `https://api.telegram.org/bot${BOT}/sendMessage`;
 
