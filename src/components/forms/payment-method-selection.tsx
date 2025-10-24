@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -18,7 +18,17 @@ import {
 import { useRouter } from "next/navigation";
 
 interface PaymentMethodSelectionProps {
-  formData: any;
+  formData: {
+    name: string;
+    city: string;
+    otherCity?: string;
+    phone: string;
+    email: string;
+    brand: string;
+    model: string;
+    otherBrand?: string;
+    otherModel?: string;
+  };
   onBack: () => void;
 }
 
@@ -135,7 +145,7 @@ export function PaymentMethodSelection({ formData, onBack }: PaymentMethodSelect
           transition={{ delay: 0.3 }}
           className="text-slate-400 text-lg"
         >
-          Select how you'd like to receive your payment
+          Select how you&apos;d like to receive your payment
         </motion.p>
       </div>
 

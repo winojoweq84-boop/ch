@@ -46,7 +46,7 @@ export default function ThankYouPage() {
           transition={{ delay: 0.5 }}
           className="text-slate-400 text-lg md:text-xl mb-8 leading-relaxed"
         >
-          Your car valuation request has been submitted successfully. You've chosen <span className="text-emerald-400 font-semibold">Crypto Payment</span> for the best rates and instant settlement. Our team will contact you within 24 hours with your personalized offer.
+          Your car valuation request has been submitted successfully. You&apos;ve chosen <span className="text-emerald-400 font-semibold">Crypto Payment</span> for the best rates and instant settlement. Our team will contact you within 24 hours with your personalized offer.
         </motion.p>
 
         {/* Crypto Benefits */}
@@ -64,7 +64,7 @@ export default function ThankYouPage() {
               </div>
               <div>
                 <h3 className="font-semibold text-emerald-200">5-10% Higher Payout</h3>
-                <p className="text-emerald-300/80 text-sm">You'll receive significantly more for your car with crypto payment</p>
+                <p className="text-emerald-300/80 text-sm">You&apos;ll receive significantly more for your car with crypto payment</p>
               </div>
             </div>
             <div className="flex items-start gap-3">

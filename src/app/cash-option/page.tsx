@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CheckCircle, Banknote, Clock, Shield } from "lucide-react";
+import { Banknote, Clock, Shield } from "lucide-react";
 
 export default function CashOptionPage() {
   return (
@@ -56,7 +56,7 @@ export default function CashOptionPage() {
               </div>
               <div>
                 <h3 className="font-semibold text-pearl">Bank Verification</h3>
-                <p className="text-slate-400 text-sm">We'll verify your bank account details for secure transfer</p>
+                <p className="text-slate-400 text-sm">We&apos;ll verify your bank account details for secure transfer</p>
               </div>
             </div>
             <div className="flex items-start gap-3">

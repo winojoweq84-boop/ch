@@ -9,8 +9,8 @@ function ThankYouTrackingInner() {
   const searchParams = useSearchParams();
   
   useEffect(() => {
-    const value = Number(searchParams.get('value') ?? 1.0);
-    const currency = (searchParams.get('currency') ?? 'USD').toUpperCase();
+    // const value = Number(searchParams.get('value') ?? 1.0);
+    // const currency = (searchParams.get('currency') ?? 'USD').toUpperCase();
     
     // Get lead data from session storage
     let leadData = null;

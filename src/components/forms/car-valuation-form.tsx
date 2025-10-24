@@ -7,7 +7,7 @@ import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Car, Zap, Clock, ArrowRight } from "lucide-react";
+import { Car, Clock, ArrowRight } from "lucide-react";
 import { BRANDS, MODELS } from "@/data/carOptions";
 import { PaymentMethodSelection } from "./payment-method-selection";
 
@@ -23,10 +23,10 @@ const EMIRATES = [
   "Other",
 ] as const;
 
-const TOKENS = [
-  "USDT",
-  "USDC",
-] as const;
+// const TOKENS = [
+//   "USDT",
+//   "USDC",
+// ] as const;
 
 const schema = z
   .object({
@@ -74,7 +74,7 @@ type FormValues = z.infer<typeof schema>;
 export function CarValuationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStep, setCurrentStep] = useState<'form' | 'payment'>('form');
-  const [formData, setFormData] = useState<any>(null);
+  const [formData, setFormData] = useState<FormValues | null>(null);
 
   const {
     register,
@@ -336,10 +336,12 @@ export function CarValuationForm() {
             exit={{ opacity: 0, x: 20 }}
             transition={{ duration: 0.5 }}
           >
-            <PaymentMethodSelection 
-              formData={formData} 
-              onBack={handleBackToForm}
-            />
+            {formData && (
+              <PaymentMethodSelection 
+                formData={formData} 
+                onBack={handleBackToForm}
+              />
+            )}
           </motion.div>
         )}
       </AnimatePresence>
